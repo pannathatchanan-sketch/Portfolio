@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>โลโก้ - 3D Printing & Materials</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="logo" onclick="showPage('home')">
+    <div class="logo-icon">W</div>
+    <span class="logo-text" data-th="โลโก้" data-en="Logo">โลโก้</span>
+  </div>
+
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active" data-th="หน้าแรก" data-en="Home">หน้าแรก</a></li>
+    <li><a onclick="showPage('about')" id="nav-about" data-th="เกี่ยวกับเรา" data-en="About Us">เกี่ยวกับเรา</a></li>
+    <li><a onclick="showPage('services')" id="nav-services" data-th="บริการของเรา" data-en="Services">บริการของเรา</a></li>
+    <li><a onclick="showPage('catalog')" id="nav-catalog" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('th')" id="btn-th">ไทย</button>
+      <button class="lang-btn" onclick="setLang('en')" id="btn-en">ENG</button>
+    </div>
+    <a class="btn-contact" onclick="showPage('contact')" data-th="ติดต่อเรา" data-en="Contact Us">ติดต่อเรา</a>
+  </div>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div id="page-home" class="page active">
+  <!-- Hero New -->
+  <section class="home-hero">
+    <div class="home-hero-left">
+      <!-- Logo Badge -->
+      <div class="hero-logo-badge">
+        <div class="badge-ring">
+          <span class="badge-star">✦</span>
+          <svg class="badge-text-svg" viewBox="0 0 120 120">
+            <path id="circlePath" d="M 60,60 m -45,0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0" fill="none"/>
+            <text font-size="10.5" fill="#1A1A2E" font-family="Sarabun,sans-serif" font-weight="600" letter-spacing="1.5">
+              <textPath href="#circlePath">Lorem ipsum • amet •</textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <p class="home-hero-tag" data-th="รับปริ้นต์งาน 3D ครบวงจร" data-en="Complete 3D Printing Service">รับปริ้นต์งาน 3D ครบวงจร</p>
+      <h1 class="home-hero-title" data-th="เปลี่ยนจินตนาการให้เป็นวัตถุจริงที่แม่นยำ" data-en="Turn Your Imagination Into Precise Reality">เปลี่ยนจินตนาการให้เป็น<br>วัตถุจริงที่แม่นยำ</h1>
+      <p class="home-hero-desc" data-th="บริการผลิตชิ้นงาน 3D ระดับอุตสาหกรรม ด้วยเทคโนโลยีที่ทันสมัยที่สุด รองรับทั้งงานต้นแบบและงานผลิตจริง พร้อมจัดส่งทั่วประเทศภายใน 24 ชั่วโมง" data-en="Industrial-grade 3D printing service with the latest technology. Supports both prototypes and production parts. Nationwide delivery within 24 hours.">บริการผลิตชิ้นงาน 3D ระดับอุตสาหกรรม ด้วยเทคโนโลยีที่ทันสมัยที่สุด<br>รองรับทั้งงานต้นแบบและงานผลิตจริง พร้อมจัดส่งทั่วประเทศภายใน 24 ชั่วโมง</p>
+
+      <div class="btn-group" style="margin-bottom:48px;">
+        <a class="btn-primary" onclick="showPage('contact')" data-th="เริ่มต้นใช้งาน" data-en="Get Started">เริ่มต้นใช้งาน</a>
+        <a class="btn-outline-white" onclick="showPage('catalog')" data-th="ดูผลงาน  ↗" data-en="View Portfolio  ↗">ดูผลงาน  ↗</a>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="home-stats">
+        <div class="home-stat-card">
+          <span class="stat-icon">❤️</span>
+          <span class="stat-num pink-text">2,400+</span>
+          <span class="stat-lbl" data-th="ชิ้นงานที่ผลิตแล้ว" data-en="Works Produced">ชิ้นงานที่ผลิตแล้ว</span>
+        </div>
+        <div class="home-stat-card">
+          <span class="stat-icon">⭐</span>
+          <span class="stat-num pink-text">98%</span>
+          <span class="stat-lbl" data-th="ความพึงพอใจลูกค้า" data-en="Customer Satisfaction">ความพึงพอใจลูกค้า</span>
+        </div>
+        <div class="home-stat-card">
+          <span class="stat-icon">👁️</span>
+          <span class="stat-num pink-text">24H</span>
+          <span class="stat-lbl" data-th="ส่งด่วนทั่วไทย" data-en="Fast Delivery Nationwide">ส่งด่วนทั่วไทย</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Robot illustration area -->
+    <div class="home-hero-right">
+      <div class="hero-circle-bg"></div>
+      <div class="hero-robot-wrap">
+        <div class="hero-robot-emoji">🤖</div>
+        <div class="hero-printer-emoji">🖨️</div>
+        <div class="hero-spool-emoji">🧵</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <div class="products-header">
+    <div class="section-title" style="margin-bottom:0;">
+      <div class="dots-decoration">
+        <div class="dot dot-orange dot-sm"></div>
+        <div class="dot dot-orange"></div>
+      </div>
+      <h2 data-th="สินค้าแนะนำ" data-en="Featured Products">สินค้าแนะนำ</h2>
+      <div class="dots-decoration">
+        <div class="dot dot-orange"></div>
+        <div class="dot dot-orange dot-sm"></div>
+      </div>
+    </div>
+    <a class="see-all" onclick="showPage('catalog')" data-th="ดูสินค้าทั้งหมด" data-en="View All Products">ดูสินค้าทั้งหมด</a>
+  </div>
+
+  <div class="products-grid">
+    <!-- Product 1 -->
+    <div class="product-card">
+      <div class="product-img">
+        <span class="product-badge" data-th="แนะนำ" data-en="Featured">แนะนำ</span>
+        🖨️
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-th="เครื่องพิมพ์ 3D Bambu Lab X1C" data-en="Bambu Lab X1C 3D Printer">เครื่องพิมพ์ 3D Bambu Lab X1C</div>
+        <div class="product-desc" data-th="เครื่องพิมพ์ 3D ความเร็วสูง Multi-color พร้อม AMS" data-en="High-speed Multi-color 3D Printer with AMS">เครื่องพิมพ์ 3D ความเร็วสูง Multi-color พร้อม AMS</div>
+        <div class="product-price">฿55,900 <span data-th="รวม VAT" data-en="VAT included">รวม VAT</span></div>
+        <div class="product-footer">
+          <span class="product-tag" data-th="เครื่องพิมพ์" data-en="Printer">เครื่องพิมพ์</span>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+    <!-- Product 2 -->
+    <div class="product-card">
+      <div class="product-img product-img-2">
+        <span class="product-badge" data-th="ขายดี" data-en="Best Seller">ขายดี</span>
+        🧵
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-th="เส้นพลาสติก PLA Premium 1kg" data-en="PLA Premium Filament 1kg">เส้นพลาสติก PLA Premium 1kg</div>
+        <div class="product-desc" data-th="เส้นพลาสติกคุณภาพสูง หลากสี พิมพ์ง่าย ผิวสวย" data-en="High quality filament, multiple colors, easy to print">เส้นพลาสติกคุณภาพสูง หลากสี พิมพ์ง่าย ผิวสวย</div>
+        <div class="product-price">฿690 <span data-th="/ ม้วน" data-en="/ roll">/ ม้วน</span></div>
+        <div class="product-footer">
+          <span class="product-tag" data-th="วัสดุ" data-en="Material">วัสดุ</span>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+    <!-- Product 3 -->
+    <div class="product-card">
+      <div class="product-img product-img-3">
+        🔧
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-th="ชุดเครื่องมือซ่อมบำรุง 3D Printer" data-en="3D Printer Maintenance Tool Kit">ชุดเครื่องมือซ่อมบำรุง 3D Printer</div>
+        <div class="product-desc" data-th="ชุดเครื่องมือครบชุด สำหรับการดูแลรักษาเครื่องพิมพ์" data-en="Complete tool set for 3D printer maintenance">ชุดเครื่องมือครบชุด สำหรับการดูแลรักษาเครื่องพิมพ์</div>
+        <div class="product-price">฿1,290</div>
+        <div class="product-footer">
+          <span class="product-tag" data-th="อุปกรณ์" data-en="Accessory">อุปกรณ์</span>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+    <!-- Product 4 -->
+    <div class="product-card">
+      <div class="product-img product-img-4">
+        <span class="product-badge" data-th="ใหม่" data-en="New">ใหม่</span>
+        💊
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-th="เรซิน UV Photopolymer 500ml" data-en="UV Photopolymer Resin 500ml">เรซิน UV Photopolymer 500ml</div>
+        <div class="product-desc" data-th="เรซินคุณภาพสูง สำหรับเครื่องพิมพ์ SLA/MSLA" data-en="High quality resin for SLA/MSLA printers">เรซินคุณภาพสูง สำหรับเครื่องพิมพ์ SLA/MSLA</div>
+        <div class="product-price">฿890 <span data-th="/ ขวด" data-en="/ bottle">/ ขวด</span></div>
+        <div class="product-footer">
+          <span class="product-tag" data-th="วัสดุ" data-en="Material">วัสดุ</span>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+    <!-- Product 5 -->
+    <div class="product-card">
+      <div class="product-img product-img-5">
+        🖥️
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-th="เครื่องพิมพ์ 3D Elegoo Saturn 4" data-en="Elegoo Saturn 4 3D Printer">เครื่องพิมพ์ 3D Elegoo Saturn 4</div>
+        <div class="product-desc" data-th="เครื่องพิมพ์ Resin ขนาดใหญ่ ความละเอียดสูง" data-en="Large format Resin printer, high precision">เครื่องพิมพ์ Resin ขนาดใหญ่ ความละเอียดสูง</div>
+        <div class="product-price">฿18,900</div>
+        <div class="product-footer">
+          <span class="product-tag" data-th="เครื่องพิมพ์" data-en="Printer">เครื่องพิมพ์</span>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+    <!-- Product 6 -->
+    <div class="product-card">
+      <div class="product-img product-img-6">
+        🎨
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-th="สี Spray สำหรับงาน 3D Print" data-en="Spray Paint for 3D Prints">สี Spray สำหรับงาน 3D Print</div>
+        <div class="product-desc" data-th="สีพ่นคุณภาพสูง ติดทนนาน หลากสีสัน" data-en="High quality spray paint, durable, multi-color">สีพ่นคุณภาพสูง ติดทนนาน หลากสีสัน</div>
+        <div class="product-price">฿290 <span data-th="/ กระป๋อง" data-en="/ can">/ กระป๋อง</span></div>
+        <div class="product-footer">
+          <span class="product-tag" data-th="อุปกรณ์" data-en="Accessory">อุปกรณ์</span>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+    <!-- Product 7 -->
+    <div class="product-card">
+      <div class="product-img product-img-7">
+        <span class="product-badge" data-th="ลดราคา" data-en="Sale">ลดราคา</span>
+        🧱
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-th="เส้นพลาสติก ABS 1kg" data-en="ABS Filament 1kg">เส้นพลาสติก ABS 1kg</div>
+        <div class="product-desc" data-th="เส้น ABS ความแข็งแรงสูง ทนความร้อน เหมาะงานอุตสาหกรรม" data-en="High strength ABS filament, heat resistant, ideal for industrial use">เส้น ABS ความแข็งแรงสูง ทนความร้อน</div>
+        <div class="product-price">฿590 <span style="text-decoration:line-through;font-size:12px;color:#999;">฿750</span></div>
+        <div class="product-footer">
+          <span class="product-tag" data-th="วัสดุ" data-en="Material">วัสดุ</span>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+    <!-- Product 8 -->
+    <div class="product-card">
+      <div class="product-img product-img-8">
+        ⚙️
+      </div>
+      <div class="product-info">
+        <div class="product-name" data-th="หัว Nozzle สำหรับ FDM Printer" data-en="Nozzle Head for FDM Printer">หัว Nozzle สำหรับ FDM Printer</div>
+        <div class="product-desc" data-th="หัว Nozzle ทองเหลือง/ทังสเตน ขนาด 0.2-1.0mm" data-en="Brass/Tungsten Nozzle 0.2-1.0mm size">หัว Nozzle ทองเหลือง/ทังสเตน หลายขนาด</div>
+        <div class="product-price">฿150 <span data-th="/ ชิ้น" data-en="/ piece">/ ชิ้น</span></div>
+        <div class="product-footer">
+          <span class="product-tag" data-th="อะไหล่" data-en="Parts">อะไหล่</span>
+          <button class="btn-add">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-circle" style="background:linear-gradient(135deg,#FFB3D1,#FF6BB5);"></div>
+      <span class="stat-number">500+</span>
+      <span class="stat-label" data-th="โปรเจกต์ที่สำเร็จ" data-en="Completed Projects">โปรเจกต์ที่สำเร็จ</span>
+    </div>
+    <div class="stat-item">
+      <div class="stat-circle" style="background:linear-gradient(135deg,#FFD180,#FF8C00);"></div>
+      <span class="stat-number orange">100+</span>
+      <span class="stat-label" data-th="ลูกค้าธุรกิจ" data-en="Business Clients">ลูกค้าธุรกิจ</span>
+    </div>
+    <div class="stat-item">
+      <div class="stat-circle" style="background:linear-gradient(135deg,#D1C4E9,#9B59B6);"></div>
+      <span class="stat-number purple">10+</span>
+      <span class="stat-label" data-th="ปีประสบการณ์" data-en="Years Experience">ปีประสบการณ์</span>
+    </div>
+    <div class="stat-item">
+      <div class="stat-circle" style="background:linear-gradient(135deg,#FFD180,#FF8C00);"></div>
+      <span class="stat-number orange">24/7</span>
+      <span class="stat-label" data-th="บริการหลังการขาย" data-en="After-sales Service">บริการหลังการขาย</span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-banner" style="margin-top:60px;">
+    <div class="cta-content">
+      <h2 data-th="พร้อมเริ่มต้นสร้างสรรค์ผลงานไปกับเราแล้วหรือยัง?" data-en="Ready to Create Amazing Works With Us?">พร้อมเริ่มต้นสร้างสรรค์<br>ผลงานไปกับเราแล้วหรือยัง?</h2>
+      <p data-th="ให้เราเป็นส่วนหนึ่งในการเปลี่ยนไอเดียของคุณให้เป็นผลงานจริงด้วยเทคโนโลยี 3D Printing" data-en="Let us be part of transforming your ideas into reality with 3D Printing technology">ให้เราเป็นส่วนหนึ่งในการเปลี่ยนไอเดียของคุณให้เป็นผลงานจริง</p>
+      <a class="btn-white" onclick="showPage('contact')" data-th="ติดต่อเรา →" data-en="Contact Us →">ติดต่อเรา →</a>
+    </div>
+    <div class="cta-robot">🤖</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">W</div>
+          <span class="logo-text" data-th="โลโก้" data-en="Logo">โลโก้</span>
+        </div>
+        <p data-th="ผู้นำด้านเทคโนโลยี 3D Printing ในประเทศไทย พร้อมให้บริการครบวงจร ตั้งแต่สินค้า วัสดุ ไปจนถึงบริการพิมพ์" data-en="Leading 3D Printing technology provider in Thailand with comprehensive services from products to printing services.">ผู้นำด้านเทคโนโลยี 3D Printing ในประเทศไทย พร้อมให้บริการครบวงจร</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-th="เมนูหลัก" data-en="Menu">เมนูหลัก</h4>
+        <ul>
+          <li><a onclick="showPage('home')" data-th="หน้าแรก" data-en="Home">หน้าแรก</a></li>
+          <li><a onclick="showPage('about')" data-th="เกี่ยวกับเรา" data-en="About Us">เกี่ยวกับเรา</a></li>
+          <li><a onclick="showPage('services')" data-th="บริการของเรา" data-en="Services">บริการของเรา</a></li>
+          <li><a onclick="showPage('catalog')" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-th="บริการ" data-en="Services">บริการ</h4>
+        <ul>
+          <li><a data-th="บริการพิมพ์ 3D" data-en="3D Printing Service">บริการพิมพ์ 3D</a></li>
+          <li><a data-th="ออกแบบ 3D" data-en="3D Design">ออกแบบ 3D</a></li>
+          <li><a data-th="ต้นแบบผลิตภัณฑ์" data-en="Prototype Development">ต้นแบบผลิตภัณฑ์</a></li>
+          <li><a data-th="ให้คำปรึกษา" data-en="Consultation">ให้คำปรึกษา</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-th="ติดต่อ" data-en="Contact">ติดต่อ</h4>
+        <ul>
+          <li><a>📞 02-123-4567</a></li>
+          <li><a>✉️ info@ylogo.co.th</a></li>
+          <li><a>💬 LINE: @ylogo3d</a></li>
+          <li><a>📍 <span data-th="กรุงเทพมหานคร" data-en="Bangkok, Thailand">กรุงเทพมหานคร</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-th="© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ" data-en="© 2024 Logo. All rights reserved.">© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ</span>
+      <span data-th="นโยบายความเป็นส่วนตัว | เงื่อนไขการใช้งาน" data-en="Privacy Policy | Terms of Service">นโยบายความเป็นส่วนตัว | เงื่อนไขการใช้งาน</span>
+    </div>
+    <div class="footer-robot">🤖</div>
+  </footer>
+</div>
+
+<!-- ===== ABOUT PAGE ===== -->
+<div id="page-about" class="page">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title" data-th="เกี่ยวกับเรา" data-en="About Us">เกี่ยวกับเรา</h1>
+      <h2 class="hero-subtitle" data-th="ผู้นำด้านเทคโนโลยีการพิมพ์สามมิติ" data-en="Leading 3D Printing Technology Provider">ผู้นำด้านเทคโนโลยี<br><span class="highlight-pink">การพิมพ์สามมิติ</span></h2>
+      <p class="hero-desc" data-th="เรามุ่งมั่นที่จะนำเสนอเครื่องพิมพ์ 3 มิติ วัสดุ และโซลูชั่นที่ครบวงจร เพื่อช่วยให้ภาคอุตสาหกรรม การศึกษา และธุรกิจ สร้างสรรค์ผลงานได้อย่างไร้ขีดจำกัด" data-en="We are committed to offering comprehensive 3D printers, materials and solutions to help industries, education, and businesses create without limits.">เรามุ่งมั่นที่จะนำเสนอเครื่องพิมพ์ 3 มิติ วัสดุ และโซลูชั่นที่ครบวงจร เพื่อช่วยให้ภาคอุตสาหกรรม การศึกษา และธุรกิจ สร้างสรรค์ผลงานได้อย่างไร้ขีดจำกัด</p>
+      <div class="about-features">
+        <div class="feature-item">
+          <div class="feature-icon-wrap pink-bg">🛡️</div>
+          <div>
+            <div class="feature-label" data-th="สินค้าคุณภาพ" data-en="Quality Products">สินค้าคุณภาพ</div>
+            <div class="feature-sublabel" data-th="แบรนด์ชั้นนำ" data-en="Leading Brands">แบรนด์ชั้นนำ</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon-wrap purple-bg">🎧</div>
+          <div>
+            <div class="feature-label" data-th="บริการครบวงจร" data-en="Full Service">บริการครบวงจร</div>
+            <div class="feature-sublabel" data-th="ให้คำปรึกษาและดูแล" data-en="Consult & Support">ให้คำปรึกษาและดูแล</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon-wrap orange-bg">🔧</div>
+          <div>
+            <div class="feature-label" data-th="ดูแลหลังการขาย" data-en="After-sales Care">ดูแลหลังการขาย</div>
+            <div class="feature-sublabel" data-th="ทีมงานมืออาชีพ" data-en="Professional Team">ทีมงานมืออาชีพ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="robot-placeholder">
+        <span class="robot-emoji">🤖</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-circle" style="background:linear-gradient(135deg,#FFB3D1,#FF6BB5);"></div>
+      <span class="stat-number">500+</span>
+      <span class="stat-label" data-th="โปรเจกต์ที่สำเร็จ ด้วยความไว้วางใจจากลูกค้า" data-en="Completed Projects with Client Trust">โปรเจกต์ที่สำเร็จ</span>
+    </div>
+    <div class="stat-item">
+      <div class="stat-circle" style="background:linear-gradient(135deg,#FFD180,#FF8C00);"></div>
+      <span class="stat-number orange">100+</span>
+      <span class="stat-label" data-th="ลูกค้าธุรกิจ ทั้งในและต่างประเทศ" data-en="Business Clients Worldwide">ลูกค้าธุรกิจ</span>
+    </div>
+    <div class="stat-item">
+      <div class="stat-circle" style="background:linear-gradient(135deg,#D1C4E9,#9B59B6);"></div>
+      <span class="stat-number purple">10+</span>
+      <span class="stat-label" data-th="ปีประสบการณ์ ในวงการ 3D Printing" data-en="Years in 3D Printing Industry">ปีประสบการณ์</span>
+    </div>
+    <div class="stat-item">
+      <div class="stat-circle" style="background:linear-gradient(135deg,#FFD180,#FF8C00);"></div>
+      <span class="stat-number orange">24/7</span>
+      <span class="stat-label" data-th="บริการหลังการขาย พร้อมดูแลทุกความต้องการ" data-en="After-sales Support Available">บริการหลังการขาย</span>
+    </div>
+  </div>
+
+  <!-- Vision & Mission -->
+  <section class="section">
+    <div class="section-title">
+      <div class="dots-decoration">
+        <div class="dot dot-orange dot-sm"></div>
+        <div class="dot dot-orange"></div>
+      </div>
+      <h2 data-th="วิสัยทัศน์และพันธกิจ" data-en="Vision & Mission">วิสัยทัศน์และพันธกิจ</h2>
+      <div class="dots-decoration">
+        <div class="dot dot-orange"></div>
+        <div class="dot dot-orange dot-sm"></div>
+      </div>
+    </div>
+    <div class="vision-mission-grid">
+      <div class="vm-card vision">
+        <div class="vm-icon orange"></div>
+        <div>
+          <div class="vm-title orange">Our Vision</div>
+          <p class="vm-text" data-th="เป็นผู้นำด้าน 3D Printing ที่ช่วยขับเคลื่อนนวัตกรรมและการเติบโตของธุรกิจในประเทศไทย" data-en="To be the leading 3D Printing company driving innovation and business growth in Thailand">เป็นผู้นำด้าน 3D Printing ที่ช่วยขับเคลื่อนนวัตกรรมและการเติบโตของธุรกิจในประเทศไทย</p>
+        </div>
+      </div>
+      <div class="vm-card mission">
+        <div class="vm-icon purple"></div>
+        <div>
+          <div class="vm-title purple">Our Mission</div>
+          <p class="vm-text" data-th="คัดสรรผลิตภัณฑ์และเทคโนโลยีคุณภาพสูง ให้คำปรึกษาและบริการหลังการขายอย่างมืออาชีพ สนับสนุนการพัฒนานวัตกรรมในทุกภาคส่วน สร้างความเชื่อมั่นและความพึงพอใจสูงสุดให้กับลูกค้า" data-en="Source premium products and technology, provide professional consultation and after-sales service, support innovation development across all sectors, build maximum trust and satisfaction for clients">คัดสรรผลิตภัณฑ์และเทคโนโลยีคุณภาพสูง<br>ให้คำปรึกษาและบริการหลังการขายอย่างมืออาชีพ<br>สนับสนุนการพัฒนานวัตกรรมในทุกภาคส่วน<br>สร้างความเชื่อมั่นและความพึงพอใจสูงสุดให้กับลูกค้า</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section style="padding: 0 0 20px;">
+    <div class="section-title">
+      <div class="dots-decoration">
+        <div class="dot dot-orange dot-sm"></div>
+        <div class="dot dot-orange"></div>
+      </div>
+      <h2 data-th="ทำไมต้องเลือกเรา" data-en="Why Choose Us">ทำไมต้องเลือกเรา</h2>
+      <div class="dots-decoration">
+        <div class="dot dot-orange"></div>
+        <div class="dot dot-orange dot-sm"></div>
+      </div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon orange"></div>
+        <div class="why-title" data-th="นวัตกรรมล้ำสมัย" data-en="Cutting-edge Innovation">นวัตกรรมล้ำสมัย</div>
+        <div class="why-desc" data-th="อัพเดทเทคโนโลยีใหม่ล่าสุดเพื่อให้คุณก้าวนำหน้าคู่แข่ง" data-en="Update the latest technology so you stay ahead of the competition">อัพเดทเทคโนโลยีใหม่ล่าสุดเพื่อให้คุณก้าวนำหน้าคู่แข่ง</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon pink"></div>
+        <div class="why-title" data-th="คุณภาพที่เหนือกว่า" data-en="Superior Quality">คุณภาพที่เหนือกว่า</div>
+        <div class="why-desc" data-th="สินค้าคุณภาพสูง มาตรฐานระดับสากล คัดสรรจากแบรนด์ชั้นนำ" data-en="High quality products, international standards, selected from leading brands">สินค้าคุณภาพสูง มาตรฐานระดับสากล</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon purple"></div>
+        <div class="why-title" data-th="ทีมงานผู้เชี่ยวชาญ" data-en="Expert Team">ทีมงานผู้เชี่ยวชาญ</div>
+        <div class="why-desc" data-th="ให้คำปรึกษาและแนะนำโดยทีมงานมืออาชีพที่มีประสบการณ์สูง" data-en="Professional consultation and guidance by our highly experienced team">ให้คำปรึกษาและแนะนำโดยทีมงานมืออาชีพ</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon orange2"></div>
+        <div class="why-title" data-th="บริการรวดเร็ว" data-en="Fast Service">บริการรวดเร็ว</div>
+        <div class="why-desc" data-th="จัดส่งไว ตรงเวลา พร้อมบริการหลังการขายที่ดูแลทุกความต้องการ" data-en="Fast delivery, on time, with after-sales service that covers all your needs">จัดส่งไว ตรงเวลา พร้อมบริการหลังการขาย</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <div class="cta-banner">
+    <div class="cta-content">
+      <h2 data-th="พร้อมเริ่มต้นสร้างสรรค์ผลงานไปกับเราแล้วหรือยัง?" data-en="Ready to Create Amazing Works With Us?">พร้อมเริ่มต้นสร้างสรรค์<br>ผลงานไปกับเราแล้วหรือยัง?</h2>
+      <p data-th="ให้เราเป็นส่วนหนึ่งในการเปลี่ยนไอเดียของคุณให้เป็นผลงานจริงด้วยเทคโนโลยี 3D Printing" data-en="Let us be part of transforming your ideas into reality with 3D Printing technology">ให้เราเป็นส่วนหนึ่งในการเปลี่ยนไอเดียของคุณให้เป็นผลงานจริง</p>
+      <a class="btn-white" onclick="showPage('contact')" data-th="ติดต่อเรา →" data-en="Contact Us →">ติดต่อเรา →</a>
+    </div>
+    <div class="cta-robot">🤖</div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><div class="logo-icon">W</div><span class="logo-text">โลโก้</span></div>
+        <p data-th="ผู้นำด้านเทคโนโลยี 3D Printing ในประเทศไทย" data-en="Leading 3D Printing technology in Thailand">ผู้นำด้านเทคโนโลยี 3D Printing ในประเทศไทย</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-th="เมนูหลัก" data-en="Menu">เมนูหลัก</h4>
+        <ul>
+          <li><a onclick="showPage('home')" data-th="หน้าแรก" data-en="Home">หน้าแรก</a></li>
+          <li><a onclick="showPage('about')" data-th="เกี่ยวกับเรา" data-en="About Us">เกี่ยวกับเรา</a></li>
+          <li><a onclick="showPage('services')" data-th="บริการของเรา" data-en="Services">บริการของเรา</a></li>
+          <li><a onclick="showPage('catalog')" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-th="บริการ" data-en="Services">บริการ</h4>
+        <ul>
+          <li><a data-th="บริการพิมพ์ 3D" data-en="3D Printing Service">บริการพิมพ์ 3D</a></li>
+          <li><a data-th="ออกแบบ 3D" data-en="3D Design">ออกแบบ 3D</a></li>
+          <li><a data-th="ต้นแบบผลิตภัณฑ์" data-en="Prototype Development">ต้นแบบผลิตภัณฑ์</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-th="ติดต่อ" data-en="Contact">ติดต่อ</h4>
+        <ul>
+          <li><a>📞 02-123-4567</a></li>
+          <li><a>✉️ info@ylogo.co.th</a></li>
+          <li><a>💬 LINE: @ylogo3d</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-th="© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ" data-en="© 2024 Logo. All rights reserved.">© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ</span>
+    </div>
+    <div class="footer-robot">🤖</div>
+  </footer>
+</div>
+
+<!-- ===== SERVICES PAGE ===== -->
+<div id="page-services" class="page">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title" data-th="บริการของเรา" data-en="Our Services">บริการของเรา</h1>
+      <h2 class="hero-subtitle" data-th="ครบทุกโซลูชั่นด้าน 3D Printing และนวัตกรรม" data-en="Complete 3D Printing & Innovation Solutions">ครบทุกโซลูชั่นด้าน<br><span class="highlight-pink">3D Printing และนวัตกรรม</span></h2>
+      <p class="hero-desc" data-th="เราพร้อมเป็นส่วนหนึ่งในการสร้างสรรค์ผลงานของคุณ ด้วยเทคโนโลยีที่ทันสมัย ทีมงานมืออาชีพ และบริการที่ใส่ใจในทุกรายละเอียด" data-en="We are ready to be part of your creative journey with cutting-edge technology, professional team, and meticulous service.">เราพร้อมเป็นส่วนหนึ่งในการสร้างสรรค์ผลงานของคุณ ด้วยเทคโนโลยีที่ทันสมัย</p>
+      <div class="btn-group">
+        <a class="btn-primary" onclick="showPage('catalog')" data-th="ดูผลงาน" data-en="View Portfolio">ดูผลงาน</a>
+        <a class="btn-outline" onclick="showPage('contact')" data-th="ขอใบเสนอราคา" data-en="Request Quotation">ขอใบเสนอราคา</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="robot-placeholder">
+        <span class="robot-emoji">🤖</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="section" style="padding-top:20px;">
+    <div class="services-grid">
+      <div class="service-card featured">
+        <span class="service-icon">🖨️</span>
+        <div class="service-title" data-th="3D Printing Service" data-en="3D Printing Service">3D Printing Service</div>
+        <p class="service-desc" data-th="รับผลิตชิ้นงานต้นแบบและชิ้นงานจริง ด้วยเทคโนโลยี 3D Printing คุณภาพสูง ทั้ง FDM, SLA และ SLS รองรับวัสดุหลากหลายชนิด" data-en="Produce prototype and final parts using high quality 3D Printing technology including FDM, SLA and SLS, supporting various materials">รับผลิตชิ้นงานต้นแบบและชิ้นงานจริง ด้วยเทคโนโลยี 3D Printing คุณภาพสูง ทั้ง FDM, SLA และ SLS รองรับวัสดุหลากหลายชนิด</p>
+        <br>
+        <ul style="color:var(--text-gray);font-size:13px;padding-left:16px;line-height:2;">
+          <li data-th="FDM / FFF Printing" data-en="FDM / FFF Printing">FDM / FFF Printing</li>
+          <li data-th="SLA / MSLA Resin Printing" data-en="SLA / MSLA Resin Printing">SLA / MSLA Resin Printing</li>
+          <li data-th="Multi-color Printing" data-en="Multi-color Printing">Multi-color Printing</li>
+          <li data-th="Large Format Printing" data-en="Large Format Printing">Large Format Printing</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🎨</span>
+        <div class="service-title pink" data-th="3D Design" data-en="3D Design">3D Design</div>
+        <p class="service-desc" data-th="ออกแบบโมเดล 3 มิติ พร้อมปรับแก้ตามความต้องการ โดยทีมนักออกแบบมืออาชีพที่มีประสบการณ์สูง" data-en="Design 3D models with revisions by professional designers with extensive experience">ออกแบบโมเดล 3 มิติ พร้อมปรับแก้ตามความต้องการ โดยทีมนักออกแบบมืออาชีพที่มีประสบการณ์สูง</p>
+        <br>
+        <ul style="color:var(--text-gray);font-size:13px;padding-left:16px;line-height:2;">
+          <li data-th="Product Design" data-en="Product Design">Product Design</li>
+          <li data-th="Industrial Design" data-en="Industrial Design">Industrial Design</li>
+          <li data-th="Reverse Engineering" data-en="Reverse Engineering">Reverse Engineering</li>
+          <li data-th="CAD Modeling" data-en="CAD Modeling">CAD Modeling</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🚀</span>
+        <div class="service-title purple" data-th="Prototype Development" data-en="Prototype Development">Prototype Development</div>
+        <p class="service-desc" data-th="สร้างต้นแบบเพื่อทดสอบก่อนการผลิตจริง ช่วยลดต้นทุนและเวลาในการพัฒนาผลิตภัณฑ์ใหม่" data-en="Create prototypes for testing before actual production, reducing costs and time in new product development">สร้างต้นแบบเพื่อทดสอบก่อนการผลิตจริง ช่วยลดต้นทุนและเวลาในการพัฒนาผลิตภัณฑ์ใหม่</p>
+        <br>
+        <ul style="color:var(--text-gray);font-size:13px;padding-left:16px;line-height:2;">
+          <li data-th="Rapid Prototyping" data-en="Rapid Prototyping">Rapid Prototyping</li>
+          <li data-th="Functional Testing" data-en="Functional Testing">Functional Testing</li>
+          <li data-th="Iteration & Refinement" data-en="Iteration & Refinement">Iteration & Refinement</li>
+          <li data-th="Production Ready" data-en="Production Ready">Production Ready</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Steps -->
+  <div class="process-section">
+    <div class="section-title">
+      <div class="dots-decoration">
+        <div class="dot dot-orange dot-sm"></div>
+        <div class="dot dot-orange"></div>
+      </div>
+      <h2 data-th="ขั้นตอนการให้บริการ" data-en="Service Process">ขั้นตอนการให้บริการ</h2>
+      <div class="dots-decoration">
+        <div class="dot dot-orange"></div>
+        <div class="dot dot-orange dot-sm"></div>
+      </div>
+    </div>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-number">01</div>
+        <div class="step-title" data-th="ปรึกษา" data-en="Consult">ปรึกษา</div>
+        <div class="step-desc" data-th="พูดคุยและวิเคราะห์ความต้องการ" data-en="Discuss and analyze requirements">พูดคุยและวิเคราะห์ความต้องการ</div>
+        <span class="step-arrow">›</span>
+      </div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <div class="step-title" data-th="ออกแบบ" data-en="Design">ออกแบบ</div>
+        <div class="step-desc" data-th="สร้างแบบจำลอง 3 มิติตามความต้องการ" data-en="Create 3D model as required">สร้างแบบจำลอง 3 มิติตามความต้องการ</div>
+        <span class="step-arrow">›</span>
+      </div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <div class="step-title" data-th="ผลิต" data-en="Produce">ผลิต</div>
+        <div class="step-desc" data-th="ดำเนินการผลิตด้วยเครื่องมาตรฐาน" data-en="Produce with standard equipment">ดำเนินการผลิตด้วยเครื่องมาตรฐาน</div>
+        <span class="step-arrow">›</span>
+      </div>
+      <div class="step">
+        <div class="step-number">04</div>
+        <div class="step-title" data-th="ส่งมอบ" data-en="Deliver">ส่งมอบ</div>
+        <div class="step-desc" data-th="ตรวจสอบคุณภาพและจัดส่งถึงมือคุณ" data-en="Quality check and deliver to you">ตรวจสอบคุณภาพและจัดส่งถึงมือคุณ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-banner" style="margin-top:60px;">
+    <div class="cta-content">
+      <h2 data-th="สนใจบริการของเรา?" data-en="Interested in Our Services?">สนใจบริการของเรา?</h2>
+      <p data-th="ติดต่อเราเพื่อรับใบเสนอราคาฟรี ทีมงานพร้อมให้คำปรึกษา 24/7" data-en="Contact us for a free quotation. Our team is ready to consult 24/7">ติดต่อเราเพื่อรับใบเสนอราคาฟรี ทีมงานพร้อมให้คำปรึกษา</p>
+      <a class="btn-white" onclick="showPage('contact')" data-th="ขอใบเสนอราคา →" data-en="Get a Quote →">ขอใบเสนอราคา →</a>
+    </div>
+    <div class="cta-robot">🤖</div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="logo"><div class="logo-icon">W</div><span class="logo-text">โลโก้</span></div><p data-th="ผู้นำด้านเทคโนโลยี 3D Printing ในประเทศไทย" data-en="Leading 3D Printing in Thailand">ผู้นำด้านเทคโนโลยี 3D Printing ในประเทศไทย</p></div>
+      <div class="footer-col"><h4 data-th="เมนูหลัก" data-en="Menu">เมนูหลัก</h4><ul><li><a onclick="showPage('home')" data-th="หน้าแรก" data-en="Home">หน้าแรก</a></li><li><a onclick="showPage('about')" data-th="เกี่ยวกับเรา" data-en="About Us">เกี่ยวกับเรา</a></li><li><a onclick="showPage('services')" data-th="บริการของเรา" data-en="Services">บริการของเรา</a></li><li><a onclick="showPage('catalog')" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</a></li></ul></div>
+      <div class="footer-col"><h4 data-th="บริการ" data-en="Services">บริการ</h4><ul><li><a data-th="บริการพิมพ์ 3D" data-en="3D Printing">บริการพิมพ์ 3D</a></li><li><a data-th="ออกแบบ 3D" data-en="3D Design">ออกแบบ 3D</a></li><li><a data-th="ต้นแบบผลิตภัณฑ์" data-en="Prototype">ต้นแบบผลิตภัณฑ์</a></li></ul></div>
+      <div class="footer-col"><h4 data-th="ติดต่อ" data-en="Contact">ติดต่อ</h4><ul><li><a>📞 02-123-4567</a></li><li><a>✉️ info@ylogo.co.th</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span data-th="© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ" data-en="© 2024 Logo. All rights reserved.">© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ</span></div>
+    <div class="footer-robot">🤖</div>
+  </footer>
+</div>
+
+<!-- ===== CATALOG PAGE ===== -->
+<div id="page-catalog" class="page">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</h1>
+      <h2 class="hero-subtitle" data-th="สินค้าและวัสดุ 3D Printing" data-en="3D Printing Products & Materials">สินค้าและวัสดุ <span class="highlight-pink">3D Printing</span></h2>
+      <p class="hero-desc" data-th="เราพร้อมเป็นส่วนหนึ่งในการสร้างสรรค์ผลงานของคุณ ด้วยเทคโนโลยีที่ทันสมัย ทีมงานมืออาชีพ และบริการที่ใส่ใจในทุกรายละเอียด" data-en="Ready to be part of your creative work with cutting-edge technology and professional service.">เราพร้อมเป็นส่วนหนึ่งในการสร้างสรรค์ผลงานของคุณ ด้วยเทคโนโลยีที่ทันสมัย</p>
+      <div class="search-bar">
+        <input type="text" id="catalog-search" data-th-placeholder="ค้นหาสินค้า ...." data-en-placeholder="Search products ...." placeholder="ค้นหาสินค้า ....">
+        <button onclick="filterProducts()">🔍</button>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="robot-placeholder">
+        <span class="robot-emoji" style="font-size:140px;">🤖</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <div class="catalog-filters">
+    <button class="filter-btn active" onclick="filterCategory(this,'all')" data-th="ทั้งหมด" data-en="All">ทั้งหมด</button>
+    <button class="filter-btn" onclick="filterCategory(this,'printer')" data-th="เครื่องพิมพ์" data-en="Printers">เครื่องพิมพ์</button>
+    <button class="filter-btn" onclick="filterCategory(this,'material')" data-th="วัสดุ / เส้นพลาสติก" data-en="Materials / Filament">วัสดุ / เส้นพลาสติก</button>
+    <button class="filter-btn" onclick="filterCategory(this,'accessory')" data-th="อุปกรณ์เสริม" data-en="Accessories">อุปกรณ์เสริม</button>
+    <button class="filter-btn" onclick="filterCategory(this,'spare')" data-th="อะไหล่" data-en="Spare Parts">อะไหล่</button>
+  </div>
+
+  <!-- Products -->
+  <div class="catalog-grid" id="catalog-grid">
+    <div class="product-card" data-category="printer">
+      <div class="product-img"><span class="product-badge" data-th="แนะนำ" data-en="Top Pick">แนะนำ</span>🖨️</div>
+      <div class="product-info">
+        <div class="product-name" data-th="Bambu Lab X1C + AMS" data-en="Bambu Lab X1C + AMS">Bambu Lab X1C + AMS</div>
+        <div class="product-desc" data-th="เครื่องพิมพ์ 3D Multi-color ความเร็วสูง พร้อมระบบ AMS 4 สี" data-en="High-speed Multi-color 3D printer with 4-color AMS system">เครื่องพิมพ์ Multi-color ความเร็วสูง</div>
+        <div class="product-price">฿55,900</div>
+        <div class="product-footer"><span class="product-tag" data-th="FDM" data-en="FDM">FDM</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="printer">
+      <div class="product-img product-img-5">🖥️</div>
+      <div class="product-info">
+        <div class="product-name" data-th="Elegoo Saturn 4 Ultra" data-en="Elegoo Saturn 4 Ultra">Elegoo Saturn 4 Ultra</div>
+        <div class="product-desc" data-th="เครื่องพิมพ์ Resin ขนาดใหญ่ ความละเอียดสูง 12K" data-en="Large Resin printer, 12K high resolution">Resin ขนาดใหญ่ ความละเอียด 12K</div>
+        <div class="product-price">฿18,900</div>
+        <div class="product-footer"><span class="product-tag" data-th="SLA/MSLA" data-en="SLA/MSLA">SLA/MSLA</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="printer">
+      <div class="product-img product-img-2">🔲</div>
+      <div class="product-info">
+        <div class="product-name" data-th="Creality Ender 3 V3 KE" data-en="Creality Ender 3 V3 KE">Creality Ender 3 V3 KE</div>
+        <div class="product-desc" data-th="เครื่องพิมพ์ 3D สำหรับผู้เริ่มต้น ราคาดี คุณภาพสูง" data-en="3D Printer for beginners, great value, high quality">เครื่องพิมพ์สำหรับผู้เริ่มต้น ราคาดี</div>
+        <div class="product-price">฿8,900</div>
+        <div class="product-footer"><span class="product-tag" data-th="FDM" data-en="FDM">FDM</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="printer">
+      <div class="product-img product-img-3">⬛</div>
+      <div class="product-info">
+        <div class="product-name" data-th="Bambu Lab P1S" data-en="Bambu Lab P1S">Bambu Lab P1S</div>
+        <div class="product-desc" data-th="เครื่องพิมพ์แบบปิด ความแม่นยำสูง เหมาะงาน Engineering" data-en="Enclosed printer, high precision, suitable for engineering work">เครื่องพิมพ์แบบปิด ความแม่นยำสูง</div>
+        <div class="product-price">฿39,900</div>
+        <div class="product-footer"><span class="product-tag" data-th="FDM" data-en="FDM">FDM</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="material">
+      <div class="product-img product-img-7"><span class="product-badge" data-th="ขายดี" data-en="Best Seller">ขายดี</span>🧵</div>
+      <div class="product-info">
+        <div class="product-name" data-th="เส้น PLA+ Premium 1kg" data-en="PLA+ Premium Filament 1kg">เส้น PLA+ Premium 1kg</div>
+        <div class="product-desc" data-th="เส้น PLA+ คุณภาพสูง พิมพ์ง่าย ผิวเนียน มี 20+ สี" data-en="High quality PLA+ filament, easy print, smooth surface, 20+ colors">PLA+ คุณภาพสูง มีมากกว่า 20 สี</div>
+        <div class="product-price">฿690 <span data-th="/ ม้วน" data-en="/ roll">/ ม้วน</span></div>
+        <div class="product-footer"><span class="product-tag" data-th="PLA+" data-en="PLA+">PLA+</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="material">
+      <div class="product-img product-img-4">💊</div>
+      <div class="product-info">
+        <div class="product-name" data-th="เรซิน UV Standard 500ml" data-en="UV Standard Resin 500ml">เรซิน UV Standard 500ml</div>
+        <div class="product-desc" data-th="เรซินคุณภาพสูง ขึ้นรูปดี รายละเอียดชัด สำหรับ SLA/MSLA" data-en="High quality resin, great detail, for SLA/MSLA printers">เรซินคุณภาพสูง รายละเอียดชัดเจน</div>
+        <div class="product-price">฿890 <span data-th="/ ขวด" data-en="/ bottle">/ ขวด</span></div>
+        <div class="product-footer"><span class="product-tag" data-th="Resin" data-en="Resin">Resin</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="material">
+      <div class="product-img"><span class="product-badge" data-th="ลดราคา" data-en="Sale">ลดราคา</span>🧱</div>
+      <div class="product-info">
+        <div class="product-name" data-th="เส้น ABS Engineering 1kg" data-en="ABS Engineering Filament 1kg">เส้น ABS Engineering 1kg</div>
+        <div class="product-desc" data-th="เส้น ABS ความแข็งแรงสูง ทนความร้อน เหมาะงานอุตสาหกรรม" data-en="High strength ABS, heat resistant, industrial grade">ABS ทนความร้อน เหมาะงานอุตสาหกรรม</div>
+        <div class="product-price">฿590 <span style="text-decoration:line-through;color:#999;font-size:12px;">฿750</span></div>
+        <div class="product-footer"><span class="product-tag" data-th="ABS" data-en="ABS">ABS</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="material">
+      <div class="product-img product-img-6">🌿</div>
+      <div class="product-info">
+        <div class="product-name" data-th="เส้น TPU Flexible 1kg" data-en="TPU Flexible Filament 1kg">เส้น TPU Flexible 1kg</div>
+        <div class="product-desc" data-th="เส้น TPU นิ่มยืดหยุ่น เหมาะทำชิ้นส่วนที่ต้องการความยืดหยุ่น" data-en="Flexible TPU filament, ideal for parts requiring elasticity">TPU ยืดหยุ่น เหมาะทำชิ้นส่วนยืดหยุ่น</div>
+        <div class="product-price">฿890 <span data-th="/ ม้วน" data-en="/ roll">/ ม้วน</span></div>
+        <div class="product-footer"><span class="product-tag" data-th="TPU" data-en="TPU">TPU</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="accessory">
+      <div class="product-img product-img-3">🔧</div>
+      <div class="product-info">
+        <div class="product-name" data-th="ชุดเครื่องมือซ่อมบำรุง" data-en="Maintenance Tool Kit">ชุดเครื่องมือซ่อมบำรุง</div>
+        <div class="product-desc" data-th="ชุดเครื่องมือครบชุด สำหรับการดูแลรักษาเครื่องพิมพ์ 3D" data-en="Complete tool set for 3D printer maintenance">ชุดเครื่องมือครบชุด ดูแลรักษาเครื่องพิมพ์</div>
+        <div class="product-price">฿1,290</div>
+        <div class="product-footer"><span class="product-tag" data-th="อุปกรณ์" data-en="Tools">อุปกรณ์</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="accessory">
+      <div class="product-img product-img-6">🎨</div>
+      <div class="product-info">
+        <div class="product-name" data-th="สี Spray สำหรับงาน 3D Print" data-en="Spray Paint for 3D Prints">สี Spray สำหรับงาน 3D Print</div>
+        <div class="product-desc" data-th="สีพ่นคุณภาพสูง ติดทนนาน หลากสีสัน 30+ สี" data-en="High quality spray paint, durable, 30+ colors">สีพ่นคุณภาพสูง ติดทนนาน 30+ สี</div>
+        <div class="product-price">฿290 <span data-th="/ กระป๋อง" data-en="/ can">/ กระป๋อง</span></div>
+        <div class="product-footer"><span class="product-tag" data-th="สี" data-en="Paint">สี</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="spare">
+      <div class="product-img product-img-8">⚙️</div>
+      <div class="product-info">
+        <div class="product-name" data-th="หัว Nozzle ทองเหลือง" data-en="Brass Nozzle Head">หัว Nozzle ทองเหลือง</div>
+        <div class="product-desc" data-th="หัว Nozzle ทองเหลืองคุณภาพสูง ขนาด 0.2 / 0.4 / 0.6 / 1.0mm" data-en="High quality brass nozzle, sizes 0.2 / 0.4 / 0.6 / 1.0mm">Nozzle ทองเหลือง ขนาดหลากหลาย</div>
+        <div class="product-price">฿150 <span data-th="/ ชิ้น" data-en="/ piece">/ ชิ้น</span></div>
+        <div class="product-footer"><span class="product-tag" data-th="อะไหล่" data-en="Parts">อะไหล่</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+    <div class="product-card" data-category="spare">
+      <div class="product-img product-img-2">🔩</div>
+      <div class="product-info">
+        <div class="product-name" data-th="Hotend Complete Kit" data-en="Hotend Complete Kit">Hotend Complete Kit</div>
+        <div class="product-desc" data-th="ชุด Hotend สำรอง พร้อมใช้งาน รองรับหลายรุ่น" data-en="Spare Hotend kit, ready to use, supports multiple models">ชุด Hotend สำรอง รองรับหลายรุ่น</div>
+        <div class="product-price">฿890</div>
+        <div class="product-footer"><span class="product-tag" data-th="อะไหล่" data-en="Parts">อะไหล่</span><button class="btn-add" onclick="addToCart(this)">+</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="logo"><div class="logo-icon">W</div><span class="logo-text">โลโก้</span></div><p data-th="ผู้นำด้านเทคโนโลยี 3D Printing" data-en="Leading 3D Printing Technology">ผู้นำด้านเทคโนโลยี 3D Printing</p></div>
+      <div class="footer-col"><h4 data-th="เมนูหลัก" data-en="Menu">เมนูหลัก</h4><ul><li><a onclick="showPage('home')" data-th="หน้าแรก" data-en="Home">หน้าแรก</a></li><li><a onclick="showPage('about')" data-th="เกี่ยวกับเรา" data-en="About Us">เกี่ยวกับเรา</a></li><li><a onclick="showPage('services')" data-th="บริการของเรา" data-en="Services">บริการของเรา</a></li><li><a onclick="showPage('catalog')" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</a></li></ul></div>
+      <div class="footer-col"><h4 data-th="หมวดหมู่" data-en="Categories">หมวดหมู่</h4><ul><li><a data-th="เครื่องพิมพ์ 3D" data-en="3D Printers">เครื่องพิมพ์ 3D</a></li><li><a data-th="วัสดุ / เส้นพลาสติก" data-en="Filament / Materials">วัสดุ / เส้นพลาสติก</a></li><li><a data-th="อุปกรณ์เสริม" data-en="Accessories">อุปกรณ์เสริม</a></li><li><a data-th="อะไหล่" data-en="Spare Parts">อะไหล่</a></li></ul></div>
+      <div class="footer-col"><h4 data-th="ติดต่อ" data-en="Contact">ติดต่อ</h4><ul><li><a>📞 02-123-4567</a></li><li><a>✉️ info@ylogo.co.th</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span data-th="© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ" data-en="© 2024 Logo. All rights reserved.">© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ</span></div>
+    <div class="footer-robot">🤖</div>
+  </footer>
+</div>
+
+<!-- ===== CONTACT PAGE ===== -->
+<div id="page-contact" class="page">
+  <!-- Hero -->
+  <section class="hero contact-hero-bg">
+    <div class="hero-content">
+      <h1 class="hero-title" data-th="ติดต่อเรา" data-en="Contact Us">ติดต่อเรา</h1>
+      <h2 class="hero-subtitle" data-th="เราพร้อมดูแลและให้คำปรึกษาทุกเรื่อง 3D Printing" data-en="We're Ready to Support & Advise You on All 3D Printing Matters">เราพร้อมดูแลและให้คำปรึกษา<br><span class="highlight-pink">ทุกเรื่อง 3D Printing</span></h2>
+      <p class="hero-desc" data-th="เราพร้อมเป็นส่วนหนึ่งในการสร้างสรรค์ผลงานของคุณ ด้วยเทคโนโลยีที่ทันสมัย ทีมงานมืออาชีพ และบริการที่ใส่ใจในทุกรายละเอียด" data-en="Ready to be part of your creative work with cutting-edge technology and professional service.">เราพร้อมเป็นส่วนหนึ่งในการสร้างสรรค์ผลงานของคุณ</p>
+    </div>
+    <div class="hero-image">
+      <div class="robot-placeholder">
+        <span class="robot-emoji">🤖</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Channels -->
+  <div class="contact-channels">
+    <div class="section-title" style="margin-bottom:0;">
+      <div class="dots-decoration"><div class="dot dot-orange dot-sm"></div><div class="dot dot-orange"></div></div>
+      <h2 data-th="ช่องทางการติดต่อ" data-en="Contact Channels">ช่องทางการติดต่อ</h2>
+      <div class="dots-decoration"><div class="dot dot-orange"></div><div class="dot dot-orange dot-sm"></div></div>
+    </div>
+    <div class="channels-grid">
+      <div class="channel-item">
+        <div class="channel-icon phone">📞</div>
+        <div class="channel-label" data-th="เบอร์โทรศัพท์" data-en="Phone">เบอร์โทรศัพท์</div>
+        <div class="channel-value">02-123-4567</div>
+        <div class="channel-note" data-th="จันทร์ – เสาร์ 09.00 – 18.00 น." data-en="Mon – Sat 09:00 – 18:00">จันทร์ – เสาร์<br>09.00 – 18.00 น.</div>
+      </div>
+      <div class="channel-item">
+        <div class="channel-icon email">✉️</div>
+        <div class="channel-label" data-th="อีเมล" data-en="Email">อีเมล</div>
+        <div class="channel-value">info@ylogo.co.th</div>
+        <div class="channel-note" data-th="ตอบกลับภายใน 24 ชั่วโมง" data-en="Reply within 24 hours">ตอบกลับภายใน 24 ชั่วโมง</div>
+      </div>
+      <div class="channel-item">
+        <div class="channel-icon line">💬</div>
+        <div class="channel-label">Line Official</div>
+        <div class="channel-value">@ylogo3d</div>
+        <div class="channel-note" data-th="แชทกับเรา ได้ตลอดเวลา" data-en="Chat with us anytime">แชทกับเรา ได้ตลอดเวลา</div>
+      </div>
+      <div class="channel-item">
+        <div class="channel-icon fb">📘</div>
+        <div class="channel-label">Facebook</div>
+        <div class="channel-value">fb.com/ylogo3d</div>
+        <div class="channel-note" data-th="ติดตามข่าวสาร และโปรโมชั่น" data-en="Follow news and promotions">ติดตามข่าวสาร และโปรโมชั่น</div>
+      </div>
+      <div class="channel-item">
+        <div class="channel-icon location">📍</div>
+        <div class="channel-label" data-th="ที่อยู่บริษัท" data-en="Office Location">ที่อยู่บริษัท</div>
+        <div class="channel-value" style="font-size:12px;" data-th="123 ถนนนวัตกรรม แขวงจตุจักร เขตจตุจักร กรุงเทพฯ 10900" data-en="123 Innovation Rd, Chatuchak, Bangkok 10900">123 ถนนนวัตกรรม<br>จตุจักร กรุงเทพฯ 10900</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form + Map -->
+  <div class="contact-bottom">
+    <div class="contact-form-card">
+      <div class="form-title">
+        <div class="dots-decoration"><div class="dot dot-orange dot-sm"></div><div class="dot dot-orange"></div></div>
+        <span data-th="ขอใบเสนอราคา" data-en="Request a Quote">ขอใบเสนอราคา</span>
+      </div>
+      <form onsubmit="submitForm(event)">
+        <div class="form-group">
+          <input type="text" data-th-placeholder="ชื่อ-นามสกุล" data-en-placeholder="Full Name" placeholder="ชื่อ-นามสกุล" required>
+        </div>
+        <div class="form-group">
+          <input type="email" data-th-placeholder="อีเมล" data-en-placeholder="Email" placeholder="อีเมล" required>
+        </div>
+        <div class="form-group">
+          <input type="tel" data-th-placeholder="เบอร์โทรศัพท์" data-en-placeholder="Phone Number" placeholder="เบอร์โทรศัพท์">
+        </div>
+        <div class="form-group">
+          <select>
+            <option value="" data-th="หัวข้อที่ต้องการติดต่อ" data-en="Subject">หัวข้อที่ต้องการติดต่อ</option>
+            <option data-th="สอบถามสินค้า" data-en="Product Inquiry">สอบถามสินค้า</option>
+            <option data-th="ขอใบเสนอราคา" data-en="Request Quotation">ขอใบเสนอราคา</option>
+            <option data-th="บริการพิมพ์ 3D" data-en="3D Printing Service">บริการพิมพ์ 3D</option>
+            <option data-th="บริการออกแบบ" data-en="Design Service">บริการออกแบบ</option>
+            <option data-th="แจ้งปัญหา/ซ่อมบำรุง" data-en="Report Issue / Repair">แจ้งปัญหา/ซ่อมบำรุง</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea data-th-placeholder="ข้อความของคุณ" data-en-placeholder="Your Message" placeholder="ข้อความของคุณ"></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;" data-th="ส่งข้อความ ✈" data-en="Send Message ✈">ส่งข้อความ ✈</button>
+      </form>
+    </div>
+    <div class="contact-map-card">
+      <div class="form-title">
+        <div class="dots-decoration"><div class="dot dot-orange dot-sm"></div><div class="dot dot-orange"></div></div>
+        <span data-th="แผนที่ของเรา" data-en="Our Location">แผนที่ของเรา</span>
+      </div>
+      <div class="map-placeholder">
+        🗺️
+        <div class="map-pin-label">
+          <strong data-th="โลโก้ Co., Ltd." data-en="Logo Co., Ltd.">โลโก้ Co., Ltd.</strong>
+          <span data-th="123 ถนนนวัตกรรม จตุจักร กรุงเทพฯ 10900" data-en="123 Innovation Rd, Chatuchak Bangkok 10900">123 ถนนนวัตกรรม จตุจักร<br>กรุงเทพฯ 10900</span>
+        </div>
+      </div>
+      <div style="margin-top:20px;">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;">
+          <span style="font-size:20px;">🚇</span>
+          <div>
+            <div style="font-size:14px;font-weight:600;" data-th="MRT สถานีจตุจักร" data-en="MRT Chatuchak Station">MRT สถานีจตุจักร</div>
+            <div style="font-size:12px;color:var(--text-gray);" data-th="ทางออก 1 เดิน 5 นาที" data-en="Exit 1, 5 minutes walk">ทางออก 1 เดิน 5 นาที</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;">
+          <span style="font-size:20px;">🚌</span>
+          <div>
+            <div style="font-size:14px;font-weight:600;" data-th="BTS สถานีหมอชิต" data-en="BTS Mo Chit Station">BTS สถานีหมอชิต</div>
+            <div style="font-size:12px;color:var(--text-gray);" data-th="ต่อรถสองแถวสาย 8" data-en="Take minibus route 8">ต่อรถสองแถวสาย 8</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <span style="font-size:20px;">🅿️</span>
+          <div>
+            <div style="font-size:14px;font-weight:600;" data-th="ที่จอดรถ" data-en="Parking">ที่จอดรถ</div>
+            <div style="font-size:12px;color:var(--text-gray);" data-th="มีที่จอดรถฟรี 50 คัน" data-en="Free parking for 50 cars">มีที่จอดรถฟรี 50 คัน</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="logo"><div class="logo-icon">W</div><span class="logo-text">โลโก้</span></div><p data-th="ผู้นำด้านเทคโนโลยี 3D Printing ในประเทศไทย" data-en="Leading 3D Printing Technology in Thailand">ผู้นำด้านเทคโนโลยี 3D Printing ในประเทศไทย</p></div>
+      <div class="footer-col"><h4 data-th="เมนูหลัก" data-en="Menu">เมนูหลัก</h4><ul><li><a onclick="showPage('home')" data-th="หน้าแรก" data-en="Home">หน้าแรก</a></li><li><a onclick="showPage('about')" data-th="เกี่ยวกับเรา" data-en="About Us">เกี่ยวกับเรา</a></li><li><a onclick="showPage('services')" data-th="บริการของเรา" data-en="Services">บริการของเรา</a></li><li><a onclick="showPage('catalog')" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</a></li></ul></div>
+      <div class="footer-col"><h4 data-th="บริการ" data-en="Services">บริการ</h4><ul><li><a data-th="บริการพิมพ์ 3D" data-en="3D Printing">บริการพิมพ์ 3D</a></li><li><a data-th="ออกแบบ 3D" data-en="3D Design">ออกแบบ 3D</a></li><li><a data-th="ต้นแบบผลิตภัณฑ์" data-en="Prototype">ต้นแบบผลิตภัณฑ์</a></li></ul></div>
+      <div class="footer-col"><h4 data-th="ติดต่อ" data-en="Contact">ติดต่อ</h4><ul><li><a>📞 02-123-4567</a></li><li><a>✉️ info@ylogo.co.th</a></li><li><a>💬 LINE: @ylogo3d</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span data-th="© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ" data-en="© 2024 Logo. All rights reserved.">© 2024 โลโก้. สงวนลิขสิทธิ์ทุกประการ</span></div>
+    <div class="footer-robot">🤖</div>
+  </footer>
+</div>
+
+<!-- ===== PROMO POPUP BANNER ===== -->
+<div id="promo-overlay" class="promo-overlay hidden" onclick="closePromo()">
+  <div class="promo-modal" onclick="event.stopPropagation()">
+    <!-- Close button -->
+    <button class="promo-close" onclick="closePromo()">✕</button>
+
+    <!-- Top ribbon -->
+    <div class="promo-ribbon" data-th="🎉 ข้อเสนอพิเศษสำหรับลูกค้าใหม่" data-en="🎉 Special Offer for New Customers">🎉 ข้อเสนอพิเศษสำหรับลูกค้าใหม่</div>
+
+    <!-- Robot deco -->
+    <div class="promo-robot">🤖</div>
+
+    <!-- Content -->
+    <div class="promo-body">
+      <p class="promo-subtitle" data-th="สั่งครั้งแรกรับทันที" data-en="Get instantly on your first order">สั่งครั้งแรกรับทันที</p>
+      <div class="promo-discount">
+        <span class="promo-num">20</span>
+        <div class="promo-percent-wrap">
+          <span class="promo-percent">%</span>
+          <span class="promo-off" data-th="ส่วนลด" data-en="OFF">ส่วนลด</span>
+        </div>
+      </div>
+      <p class="promo-detail" data-th="สำหรับคำสั่งซื้อแรก ไม่มีขั้นต่ำ ทุกหมวดหมู่สินค้า" data-en="For your first order. No minimum. All product categories.">สำหรับคำสั่งซื้อแรก ไม่มีขั้นต่ำ ทุกหมวดหมู่สินค้า</p>
+
+      <!-- Coupon box -->
+      <div class="promo-coupon-wrap">
+        <span class="promo-coupon-label" data-th="ใช้โค้ด" data-en="Use Code">ใช้โค้ด</span>
+        <div class="promo-coupon-box">
+          <span class="promo-code" id="promo-code-text">FIRST20</span>
+          <button class="promo-copy-btn" onclick="copyCode()" id="copy-btn" data-th="คัดลอก" data-en="Copy">คัดลอก</button>
+        </div>
+      </div>
+
+      <!-- Expire -->
+      <p class="promo-expire" data-th="⏰ หมดเขต 30 มิ.ย. 2567 เท่านั้น!" data-en="⏰ Expires June 30, 2024 only!">⏰ หมดเขต 30 มิ.ย. 2567 เท่านั้น!</p>
+
+      <!-- CTA buttons -->
+      <div class="promo-btns">
+        <button class="btn-promo-main" onclick="closePromoAndGo('contact')" data-th="ใช้ส่วนลดเลย →" data-en="Use Discount Now →">ใช้ส่วนลดเลย →</button>
+        <button class="btn-promo-skip" onclick="closePromo()" data-th="ข้ามไปก่อน" data-en="Skip for now">ข้ามไปก่อน</button>
+      </div>
+
+      <!-- No show again -->
+      <label class="promo-noshow">
+        <input type="checkbox" id="no-show-again" onchange="toggleNoShow(this)">
+        <span data-th="ไม่แสดงอีก" data-en="Don't show again">ไม่แสดงอีก</span>
+      </label>
+    </div>
+
+    <!-- Decorative dots -->
+    <div class="promo-deco-dot pd1"></div>
+    <div class="promo-deco-dot pd2"></div>
+    <div class="promo-deco-dot pd3"></div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" style="position:fixed;bottom:32px;right:32px;background:linear-gradient(135deg,var(--pink),var(--orange));color:white;padding:14px 24px;border-radius:12px;font-size:15px;font-weight:600;display:none;z-index:9999;box-shadow:0 8px 24px rgba(233,30,140,0.4);animation:fadeInUp 0.3s ease-out;"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
