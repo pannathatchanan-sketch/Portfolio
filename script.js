@@ -1,6 +1,164 @@
 let currentLang = 'th';
 let currentPage = 'home';
 
+// ===== REVIEWS SLIDER =====
+let reviewIndex = 0;
+let reviewsPerPage = 3;
+let totalReviews = 0;
+let currentReviewRating = 0;
+
+function initReviews() {
+  const track = document.getElementById('reviews-track');
+  if (!track) return;
+  totalReviews = track.querySelectorAll('.review-card').length;
+  updateReviewsPerPage();
+  buildDots();
+  updateSlider();
+  window.addEventListener('resize', () => {
+    updateReviewsPerPage();
+    reviewIndex = 0;
+    buildDots();
+    updateSlider();
+  });
+}
+
+function updateReviewsPerPage() {
+  const w = window.innerWidth;
+  if (w < 640)       reviewsPerPage = 1;
+  else if (w < 1024) reviewsPerPage = 2;
+  else               reviewsPerPage = 3;
+  // Update card widths
+  const cards = document.querySelectorAll('.review-card');
+  const gap = 20;
+  cards.forEach(c => {
+    c.style.minWidth = `calc(${100 / reviewsPerPage}% - ${gap * (reviewsPerPage - 1) / reviewsPerPage}px)`;
+    c.style.maxWidth = c.style.minWidth;
+  });
+}
+
+function buildDots() {
+  const dotsEl = document.getElementById('reviews-dots');
+  if (!dotsEl) return;
+  const pages = Math.ceil(totalReviews / reviewsPerPage);
+  dotsEl.innerHTML = '';
+  for (let i = 0; i < pages; i++) {
+    const d = document.createElement('div');
+    d.className = 'rdot' + (i === 0 ? ' active' : '');
+    d.onclick = () => { reviewIndex = i; updateSlider(); };
+    dotsEl.appendChild(d);
+  }
+}
+
+function slideReviews(dir) {
+  const pages = Math.ceil(totalReviews / reviewsPerPage);
+  reviewIndex = Math.max(0, Math.min(pages - 1, reviewIndex + dir));
+  updateSlider();
+}
+
+function updateSlider() {
+  const track = document.getElementById('reviews-track');
+  if (!track) return;
+  const card = track.querySelector('.review-card');
+  if (!card) return;
+  const cardW = card.offsetWidth + 20;
+  track.style.transform = `translateX(-${reviewIndex * reviewsPerPage * cardW}px)`;
+
+  const dots = document.querySelectorAll('.rdot');
+  dots.forEach((d, i) => d.classList.toggle('active', i === reviewIndex));
+
+  const pages = Math.ceil(totalReviews / reviewsPerPage);
+  const leftBtn = document.querySelector('.arrow-left');
+  const rightBtn = document.querySelector('.arrow-right');
+  if (leftBtn)  leftBtn.disabled  = reviewIndex === 0;
+  if (rightBtn) rightBtn.disabled = reviewIndex >= pages - 1;
+}
+
+// ===== WRITE REVIEW =====
+function openWriteReview() {
+  const el = document.getElementById('write-review-overlay');
+  if (el) el.classList.remove('hidden');
+  currentReviewRating = 0;
+  updateStarUI(0);
+}
+
+function closeWriteReview() {
+  const el = document.getElementById('write-review-overlay');
+  if (el) el.classList.add('hidden');
+}
+
+function setReviewStar(val) {
+  currentReviewRating = val;
+  updateStarUI(val);
+  const hints = {
+    1: currentLang === 'th' ? 'แย่มาก 😞' : 'Very Bad 😞',
+    2: currentLang === 'th' ? 'พอใช้ 😐'   : 'Fair 😐',
+    3: currentLang === 'th' ? 'ปานกลาง 🙂' : 'Average 🙂',
+    4: currentLang === 'th' ? 'ดีมาก 😊'   : 'Good 😊',
+    5: currentLang === 'th' ? 'ยอดเยี่ยม 🤩' : 'Excellent 🤩',
+  };
+  const hint = document.getElementById('wr-star-hint');
+  if (hint) hint.textContent = hints[val];
+}
+
+function updateStarUI(val) {
+  document.querySelectorAll('.wr-star').forEach(s => {
+    s.classList.toggle('active', parseInt(s.dataset.val) <= val);
+  });
+}
+
+function submitReview(e) {
+  e.preventDefault();
+  if (currentReviewRating === 0) {
+    showToast(currentLang === 'th' ? '⭐ กรุณาให้คะแนนก่อนส่ง' : '⭐ Please rate before submitting');
+    return;
+  }
+  const form = e.target;
+  const inputs = form.querySelectorAll('input, textarea');
+  const name    = inputs[0].value.trim();
+  const job     = inputs[1].value.trim() || (currentLang === 'th' ? 'ลูกค้า' : 'Customer');
+  const product = inputs[2].value.trim();
+  const text    = inputs[3].value.trim();
+  const stars   = '★'.repeat(currentReviewRating) + '☆'.repeat(5 - currentReviewRating);
+  const initials = name.charAt(0).toUpperCase();
+  const colors = [
+    'linear-gradient(135deg,#FF6BB5,#E91E8C)',
+    'linear-gradient(135deg,#FF8C00,#FFA940)',
+    'linear-gradient(135deg,#9B59B6,#C39BD3)',
+    'linear-gradient(135deg,#26C6DA,#0097A7)',
+    'linear-gradient(135deg,#66BB6A,#388E3C)',
+  ];
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  const newCard = document.createElement('div');
+  newCard.className = 'review-card new-review';
+  newCard.innerHTML = `
+    <div class="review-header">
+      <div class="reviewer-avatar" style="background:${color};">${initials}</div>
+      <div class="reviewer-info">
+        <div class="reviewer-name">${name}</div>
+        <div class="reviewer-meta">${job} • ${currentLang === 'th' ? 'เพิ่งรีวิว' : 'Just reviewed'}</div>
+      </div>
+      <div class="review-verified">${currentLang === 'th' ? '✓ ซื้อแล้ว' : '✓ Verified'}</div>
+    </div>
+    <div class="review-stars">${stars}</div>
+    ${product ? `<div class="review-product">${currentLang === 'th' ? 'สินค้า: ' : 'Product: '}${product}</div>` : ''}
+    <p class="review-text">${text}</p>
+    <div class="review-helpful"><span>👍 ${currentLang === 'th' ? 'มีประโยชน์ (0)' : 'Helpful (0)'}</span></div>
+  `;
+  const track = document.getElementById('reviews-track');
+  if (track) {
+    track.insertBefore(newCard, track.firstChild);
+    totalReviews++;
+    updateReviewsPerPage();
+    buildDots();
+    reviewIndex = 0;
+    updateSlider();
+    setTimeout(() => newCard.classList.remove('new-review'), 3000);
+  }
+  form.reset();
+  closeWriteReview();
+  showToast(currentLang === 'th' ? '🎉 ขอบคุณสำหรับรีวิวของคุณ!' : '🎉 Thank you for your review!');
+}
+
 // ===== PROMO POPUP =====
 function initPromo() {
   const noShow = localStorage.getItem('promo_noshow');
@@ -162,5 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const cs = document.getElementById('catalog-search');
   if (cs) cs.addEventListener('keydown', e => { if (e.key === 'Enter') filterProducts(); });
   applyLang(currentLang);
+  initReviews();
   initPromo();
 });
