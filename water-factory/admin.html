@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AquaControl — Admin System</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sidebar-w:240px;
+  --primary:#0057a8;--primary-dark:#003f7a;--primary-light:#e8f1fb;
+  --accent:#00b4d8;--accent-light:#caf0f8;
+  --gold:#f4a30a;--gold-light:#fff3cd;
+  --success:#2dc653;--success-light:#d4f5dc;
+  --danger:#e63946;--danger-light:#fde8ea;
+  --warn:#f4a30a;--warn-light:#fff3cd;
+  --purple:#7c3aed;--purple-light:#ede9fe;
+  --bg:#f1f5f9;--white:#fff;
+  --text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 16px rgba(0,0,0,.10);
+}
+html{font-family:'Sarabun',sans-serif;font-size:14px;color:var(--text)}
+body{background:var(--bg);display:flex;min-height:100vh;overflow-x:hidden}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--primary-dark);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;height:100vh;
+  z-index:200;transition:transform .25s;
+}
+.sidebar-logo{
+  padding:20px 18px 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;gap:10px;
+  color:white;font-size:1.1rem;font-weight:800;
+}
+.logo-icon{
+  width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--accent));
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;color:white;flex-shrink:0;
+}
+.logo-sub{display:block;font-size:.65rem;font-weight:400;opacity:.6;margin-top:1px}
+
+.sidebar-user{
+  padding:12px 18px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.user-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#e09200);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.8rem;color:white;flex-shrink:0;
+}
+.user-name{color:white;font-size:.82rem;font-weight:600;line-height:1.3}
+.user-role{color:rgba(255,255,255,.5);font-size:.72rem}
+
+.sidebar-nav{flex:1;overflow-y:auto;padding:10px 0}
+.nav-group-label{
+  padding:14px 18px 4px;
+  color:rgba(255,255,255,.35);font-size:.65rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 18px;color:rgba(255,255,255,.65);
+  cursor:pointer;border-radius:0;transition:all .15s;
+  font-size:.85rem;font-weight:500;border:none;background:none;width:100%;text-align:left;
+  position:relative;
+}
+.nav-item i{width:16px;text-align:center;font-size:.85rem;flex-shrink:0}
+.nav-item:hover{background:rgba(255,255,255,.07);color:white}
+.nav-item.active{background:rgba(255,255,255,.12);color:white;font-weight:600}
+.nav-item.active::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:var(--gold);border-radius:0 2px 2px 0;
+}
+.nav-badge{
+  margin-left:auto;background:var(--danger);color:white;
+  font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:999px;
+}
+
+.sidebar-footer{
+  padding:12px 18px;border-top:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.4);font-size:.75rem;
+}
+
+/* ═══ MAIN ═══ */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+.topbar{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:0 28px;height:56px;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:100;box-shadow:var(--shadow);
+}
+.topbar-title{font-size:1rem;font-weight:700;flex:1}
+.topbar-search{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg);border:1px solid var(--border);border-radius:8px;
+  padding:6px 12px;width:220px;
+}
+.topbar-search input{border:none;background:none;outline:none;font-family:inherit;font-size:.85rem;width:100%;color:var(--text)}
+.topbar-search i{color:var(--muted);font-size:.8rem}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.icon-btn{
+  width:34px;height:34px;border-radius:8px;border:1px solid var(--border);
+  background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:.85rem;transition:all .15s;position:relative;
+}
+.icon-btn:hover{background:var(--bg);color:var(--primary)}
+.notif-dot{
+  position:absolute;top:6px;right:6px;
+  width:7px;height:7px;background:var(--danger);border-radius:50%;
+  border:1.5px solid var(--white);
+}
+
+.content{padding:24px 28px;flex:1}
+
+/* ═══ PAGE VIEWS ═══ */
+.page{display:none}.page.active{display:block}
+
+/* ═══ KPI CARDS ═══ */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi-card{
+  background:var(--white);border-radius:var(--radius);padding:18px 20px;
+  box-shadow:var(--shadow);border:1px solid var(--border);
+  display:flex;flex-direction:column;gap:12px;
+}
+.kpi-top{display:flex;align-items:center;justify-content:space-between}
+.kpi-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+}
+.kpi-trend{font-size:.75rem;font-weight:600;display:flex;align-items:center;gap:4px}
+.kpi-trend.up{color:var(--success)}.kpi-trend.down{color:var(--danger)}.kpi-trend.flat{color:var(--muted)}
+.kpi-value{font-size:1.55rem;font-weight:800;line-height:1}
+.kpi-label{font-size:.78rem;color:var(--muted);margin-top:2px}
+
+/* ═══ CARD ═══ */
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
+.card-header{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.card-title{font-size:.9rem;font-weight:700}
+.card-body{padding:16px 18px}
+
+/* ═══ CHARTS ROW ═══ */
+.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px}
+.chart-wrap{position:relative;height:220px}
+
+/* ═══ GRID 2 COL ═══ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+
+/* ═══ TABLE ═══ */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+thead tr{background:var(--bg)}
+th{padding:9px 12px;text-align:left;font-weight:700;color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+td{padding:9px 12px;border-top:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:var(--bg)}
+.tbl-actions{display:flex;gap:6px}
+
+/* ═══ BADGE ═══ */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.badge-success{background:var(--success-light);color:#166534}
+.badge-danger {background:var(--danger-light); color:#9b1c1c}
+.badge-warn   {background:var(--gold-light);   color:#92400e}
+.badge-primary{background:var(--primary-light);color:var(--primary-dark)}
+.badge-purple {background:var(--purple-light); color:var(--purple)}
+.badge-muted  {background:var(--bg);           color:var(--muted)}
+
+/* ═══ BUTTONS ═══ */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:8px;font-family:inherit;font-size:.83rem;
+  font-weight:600;cursor:pointer;border:none;transition:all .15s;text-decoration:none;
+}
+.btn-primary{background:var(--primary);color:white}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-success{background:var(--success);color:white}
+.btn-danger {background:var(--danger); color:white}
+.btn-warn   {background:var(--gold);   color:#1a1a1a}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{background:var(--bg)}
+.btn-sm{padding:4px 10px;font-size:.75rem}
+.btn-icon{width:28px;height:28px;padding:0;justify-content:center}
+
+/* ═══ FORM ═══ */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+label{font-size:.78rem;font-weight:600;color:var(--muted)}
+input,select,textarea{
+  padding:8px 11px;border:1px solid var(--border);border-radius:8px;
+  font-family:inherit;font-size:.85rem;color:var(--text);outline:none;
+  transition:border-color .15s;background:var(--white);
+}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,87,168,.1)}
+textarea{resize:vertical;min-height:70px}
+
+/* ═══ MODAL ═══ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);
+  z-index:500;display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(2px);
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--white);border-radius:14px;width:560px;max-width:95vw;
+  max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);
+  animation:modalIn .2s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(10px)}}
+.modal-header{
+  padding:18px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-header h3{font-size:.98rem;font-weight:800}
+.modal-close{
+  width:28px;height:28px;border-radius:6px;border:none;
+  background:var(--bg);cursor:pointer;color:var(--muted);font-size:.85rem;
+}
+.modal-body{padding:22px}
+.modal-footer{
+  padding:14px 22px;border-top:1px solid var(--border);
+  display:flex;justify-content:flex-end;gap:10px;
+}
+
+/* ═══ TABS ═══ */
+.tabs{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:8px;width:fit-content;margin-bottom:20px}
+.tab-btn{
+  padding:6px 16px;border-radius:6px;border:none;background:none;
+  font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;color:var(--muted);
+  transition:all .15s;
+}
+.tab-btn.active{background:var(--white);color:var(--primary);box-shadow:var(--shadow)}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-bar{height:6px;background:var(--border);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;border-radius:999px;transition:width .5s}
+
+/* ═══ AVATAR ═══ */
+.avatar{
+  width:30px;height:30px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:white;
+  flex-shrink:0;
+}
+
+/* ═══ TIMELINE ═══ */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:12px;padding:10px 0;position:relative}
+.tl-item:not(:last-child)::after{
+  content:'';position:absolute;left:14px;top:38px;bottom:0;
+  width:1px;background:var(--border);
+}
+.tl-dot{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;flex-shrink:0;z-index:1;
+}
+.tl-content{flex:1}
+.tl-action{font-size:.83rem;font-weight:600}
+.tl-meta{font-size:.75rem;color:var(--muted);margin-top:2px}
+
+/* ═══ STOCK METER ═══ */
+.stock-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--border);
+}
+.stock-item:last-child{border-bottom:none}
+.stock-name{flex:1;font-size:.83rem;font-weight:600}
+.stock-qty{font-size:.83rem;font-weight:700;min-width:60px;text-align:right}
+
+/* ═══ PERMISSION TABLE ═══ */
+.perm-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.perm-table th{padding:8px 12px;text-align:center;font-size:.72rem;color:var(--muted);font-weight:700}
+.perm-table th:first-child{text-align:left}
+.perm-table td{padding:8px 12px;border-top:1px solid var(--border);text-align:center}
+.perm-table td:first-child{text-align:left;font-weight:600}
+.perm-check{cursor:pointer;width:16px;height:16px;accent-color:var(--primary)}
+
+/* ═══ STAT ROW ═══ */
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.stat-row:last-child{border-bottom:none}
+.stat-label{font-size:.82rem;color:var(--muted)}
+.stat-value{font-size:.9rem;font-weight:700}
+
+/* ═══ PAYMENT METHOD ═══ */
+.pay-method{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 8px;border-radius:6px;font-size:.72rem;font-weight:700;
+}
+.pay-cash   {background:#fef3c7;color:#92400e}
+.pay-transfer{background:#dbeafe;color:#1e40af}
+.pay-credit {background:#f3e8ff;color:#6b21a8}
+.pay-qr     {background:#d1fae5;color:#065f46}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:999px}
+
+/* ═══ TOAST ═══ */
+.toast-container{position:fixed;top:70px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px}
+.toast{
+  background:var(--text);color:white;padding:10px 16px;border-radius:10px;
+  font-size:.83rem;font-weight:600;box-shadow:var(--shadow-md);
+  display:flex;align-items:center;gap:8px;
+  animation:toastIn .25s ease;max-width:320px;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}}
+.toast.success{background:#166534}
+.toast.danger {background:#9b1c1c}
+.toast.warn   {background:#92400e}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1100px){
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .charts-row{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .main{margin-left:0}
+  .kpi-grid{grid-template-columns:1fr}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><i class="fa-solid fa-droplet"></i></div>
+    <div>AquaControl<span class="logo-sub">Water Factory Admin</span></div>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">อ</div>
+    <div>
+      <div class="user-name">อภิชาติ วงศ์สุข</div>
+      <div class="user-role">เจ้าของโรงงาน</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group-label">ภาพรวม</div>
+    <button class="nav-item active" onclick="showPage('dashboard')">
+      <i class="fa-solid fa-house"></i> Dashboard
+    </button>
+    <button class="nav-item" onclick="showPage('sales')">
+      <i class="fa-solid fa-chart-line"></i> ยอดขาย
+    </button>
+
+    <div class="nav-group-label">สินค้า & คลัง</div>
+    <button class="nav-item" onclick="showPage('products')">
+      <i class="fa-solid fa-box"></i> สินค้า
+    </button>
+    <button class="nav-item" onclick="showPage('stock')">
+      <i class="fa-solid fa-warehouse"></i> สต็อก (IN/OUT)
+    </button>
+
+    <div class="nav-group-label">การขาย</div>
+    <button class="nav-item" onclick="showPage('bills')">
+      <i class="fa-solid fa-file-invoice"></i> บิล / ใบส่งของ
+      <span class="nav-badge">3</span>
+    </button>
+    <button class="nav-item" onclick="showPage('delivery')">
+      <i class="fa-solid fa-truck"></i> การจัดส่ง
+    </button>
+    <button class="nav-item" onclick="showPage('customers')">
+      <i class="fa-solid fa-users"></i> ลูกค้า
+    </button>
+    <button class="nav-item" onclick="showPage('payments')">
+      <i class="fa-solid fa-money-bill-transfer"></i> รับเงิน
+    </button>
+
+    <div class="nav-group-label">จัดการระบบ</div>
+    <button class="nav-item" onclick="showPage('employees')">
+      <i class="fa-solid fa-id-badge"></i> พนักงาน & สิทธิ์
+    </button>
+    <button class="nav-item" onclick="showPage('audit')">
+      <i class="fa-solid fa-shield-halved"></i> Audit Log
+      <span class="nav-badge" style="background:var(--warn);color:#1a1a1a">!</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">v1.0.0 · โรงงานน้ำสยาม จ.นครปฐม</div>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div class="main">
+  <header class="topbar">
+    <span class="topbar-title" id="topbarTitle">Dashboard</span>
+    <div class="topbar-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="ค้นหา..."/>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" title="แจ้งเตือน">
+        <i class="fa-solid fa-bell"></i><span class="notif-dot"></span>
+      </button>
+      <button class="icon-btn" title="รีเฟรช" onclick="showToast('รีเฟรชข้อมูลแล้ว','success')">
+        <i class="fa-solid fa-rotate-right"></i>
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="showPage('bills');openBillModal()">
+        <i class="fa-solid fa-plus"></i> เปิดบิลใหม่
+      </button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════
+         PAGE: DASHBOARD
+    ══════════════════════════════════════ -->
+    <div class="page active" id="page-dashboard">
+      <!-- Date filter -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div>
+          <div style="font-size:1.1rem;font-weight:800">สวัสดี, คุณอภิชาติ 👋</div>
+          <div style="color:var(--muted);font-size:.82rem">วันพฤหัสบดีที่ 5 มิถุนายน 2569 · ข้อมูล Real-time</div>
+        </div>
+        <div class="tabs" style="margin-bottom:0">
+          <button class="tab-btn active" onclick="setDashTab(this,'today')">วันนี้</button>
+          <button class="tab-btn" onclick="setDashTab(this,'week')">สัปดาห์นี้</button>
+          <button class="tab-btn" onclick="setDashTab(this,'month')">เดือนนี้</button>
+        </div>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon" style="background:var(--primary-light);color:var(--primary)"><i class="fa-solid fa-thai-baht-sign"></i></div>
+            <div class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i>+12%</div>
+          </div>
+          <div class="kpi-value" id="kpi-revenue">฿84,200</div>
+          <div class="kpi-label">ยอดขายรวม</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon" style="background:var(--success-light);color:var(--success)"><i class="fa-solid fa-file-invoice"></i></div>
+            <div class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i>+8</div>
+          </div>
+          <div class="kpi-value" id="kpi-bills">47</div>
+          <div class="kpi-label">บิลที่เปิดวันนี้</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon" style="background:#dbeafe;color:#1e40af"><i class="fa-solid fa-bottle-water"></i></div>
+            <div class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i>+5%</div>
+          </div>
+          <div class="kpi-value" id="kpi-bottles">1,247</div>
+          <div class="kpi-label">ถังที่ส่งวันนี้</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon" style="background:var(--danger-light);color:var(--danger)"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="kpi-trend down"><i class="fa-solid fa-arrow-up"></i>+2</div>
+          </div>
+          <div class="kpi-value" id="kpi-alerts" style="color:var(--danger)">2</div>
+          <div class="kpi-label">รายการผิดปกติ</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-row">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">ยอดขายรายวัน (7 วันล่าสุด)</span>
+            <select onchange="updateSalesChart(this.value)" style="font-size:.78rem;padding:4px 8px;border-radius:6px;border:1px solid var(--border)">
+              <option>สัปดาห์นี้</option><option>สัปดาห์ที่แล้ว</option>
+            </select>
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="salesChart"></canvas></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">วิธีรับชำระ</span></div>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="payChart"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom row -->
+      <div class="grid-2">
+        <!-- Recent bills -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">บิลล่าสุด</span>
+            <button class="btn btn-outline btn-sm" onclick="showPage('bills')">ดูทั้งหมด</button>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>เลขบิล</th><th>ลูกค้า</th><th>ยอด</th><th>สถานะ</th></tr></thead>
+              <tbody>
+                <tr><td>#INV-2847</td><td>ร้านน้ำทอง</td><td>฿2,400</td><td><span class="badge badge-success">ชำระแล้ว</span></td></tr>
+                <tr><td>#INV-2846</td><td>ตลาดเช้านครปฐม</td><td>฿5,600</td><td><span class="badge badge-warn">รอชำระ</span></td></tr>
+                <tr><td>#INV-2845</td><td>ร้านสะดวกซื้อ ป.ป.</td><td>฿1,200</td><td><span class="badge badge-success">ชำระแล้ว</span></td></tr>
+                <tr><td>#INV-2844</td><td>โรงแรม 3 ดาว</td><td>฿8,800</td><td><span class="badge badge-danger">เกินกำหนด</span></td></tr>
+                <tr><td>#INV-2843</td><td>วัดพระปฐมเจดีย์</td><td>฿3,200</td><td><span class="badge badge-success">ชำระแล้ว</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Alerts & Audit -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">⚠️ แจ้งเตือนระบบ</span>
+            <button class="btn btn-outline btn-sm" onclick="showPage('audit')">Audit Log</button>
+          </div>
+          <div class="card-body" style="padding:0">
+            <div class="timeline" style="padding:12px 16px">
+              <div class="tl-item">
+                <div class="tl-dot" style="background:var(--danger-light);color:var(--danger)"><i class="fa-solid fa-xmark"></i></div>
+                <div class="tl-content">
+                  <div class="tl-action">รถ TH-801: ยอดเงินขาด ฿1,200</div>
+                  <div class="tl-meta">คนขับ: สมชาย · 14:22 · รอตรวจสอบ</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:var(--gold-light);color:var(--gold)"><i class="fa-solid fa-pen"></i></div>
+                <div class="tl-content">
+                  <div class="tl-action">สมศักดิ์แก้ไขบิล #INV-2831 ลด ฿500</div>
+                  <div class="tl-meta">10:32 · ยังไม่มีการอนุมัติ</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:var(--success-light);color:var(--success)"><i class="fa-solid fa-check"></i></div>
+                <div class="tl-content">
+                  <div class="tl-action">TH-805 ปิดรอบเรียบร้อย ยอดตรง</div>
+                  <div class="tl-meta">คนขับ: วิชัย · 12:05 · ฿11,200</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:var(--primary-light);color:var(--primary)"><i class="fa-solid fa-boxes-stacked"></i></div>
+                <div class="tl-content">
+                  <div class="tl-action">นำเข้าสต็อกถัง 18.9L จำนวน 200 ถัง</div>
+                  <div class="tl-meta">โดย: สุนีย์ (แคชเชียร์) · 08:15</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:#dbeafe;color:#1e40af"><i class="fa-solid fa-qrcode"></i></div>
+                <div class="tl-content">
+                  <div class="tl-action">รับชำระ QR PromptPay #INV-2847 ฿2,400</div>
+                  <div class="tl-meta">ยืนยันอัตโนมัติ · 15:10</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stock summary -->
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header"><span class="card-title">สต็อกคงเหลือ</span><button class="btn btn-outline btn-sm" onclick="showPage('stock')">จัดการ</button></div>
+          <div class="card-body">
+            <div class="stock-item">
+              <div class="stock-name">🫙 ถัง 18.9 ลิตร</div>
+              <div>
+                <div class="progress-bar" style="width:120px"><div class="progress-fill" style="width:72%;background:var(--primary)"></div></div>
+              </div>
+              <div class="stock-qty" style="color:var(--primary)">360 ถัง</div>
+            </div>
+            <div class="stock-item">
+              <div class="stock-name">🧴 ขวด 1.5 ลิตร</div>
+              <div>
+                <div class="progress-bar" style="width:120px"><div class="progress-fill" style="width:45%;background:var(--gold)"></div></div>
+              </div>
+              <div class="stock-qty" style="color:var(--gold)">225 ลัง</div>
+            </div>
+            <div class="stock-item">
+              <div class="stock-name">💧 ขวด 600 ml</div>
+              <div>
+                <div class="progress-bar" style="width:120px"><div class="progress-fill" style="width:20%;background:var(--danger)"></div></div>
+              </div>
+              <div class="stock-qty" style="color:var(--danger)">48 ลัง ⚠</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">รถส่งน้ำวันนี้</span></div>
+          <div class="card-body" style="padding:10px 18px">
+            <div class="stat-row"><span class="stat-label">🚛 ออกจากโรงงานแล้ว</span><span class="stat-value">8 คัน</span></div>
+            <div class="stat-row"><span class="stat-label">✅ ปิดรอบแล้ว</span><span class="stat-value" style="color:var(--success)">5 คัน</span></div>
+            <div class="stat-row"><span class="stat-label">⏳ ยังอยู่นอก</span><span class="stat-value" style="color:var(--gold)">3 คัน</span></div>
+            <div class="stat-row"><span class="stat-label">⛔ ยอดไม่ตรง</span><span class="stat-value" style="color:var(--danger)">1 คัน</span></div>
+            <div class="stat-row"><span class="stat-label">💰 เงินสดรอนำส่ง</span><span class="stat-value">฿12,500</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">ยอดค้างชำระ Top 3</span></div>
+          <div class="card-body" style="padding:10px 18px">
+            <div class="stat-row">
+              <div><div class="stat-label">โรงแรม 3 ดาว</div><div style="font-size:.72rem;color:var(--danger)">เกิน 35 วัน</div></div>
+              <span class="stat-value" style="color:var(--danger)">฿8,800</span>
+            </div>
+            <div class="stat-row">
+              <div><div class="stat-label">ตลาดเช้านครปฐม</div><div style="font-size:.72rem;color:var(--gold)">เกิน 15 วัน</div></div>
+              <span class="stat-value" style="color:var(--gold)">฿5,600</span>
+            </div>
+            <div class="stat-row">
+              <div><div class="stat-label">ร้านอาหารสมพร</div><div style="font-size:.72rem;color:var(--muted)">5 วัน</div></div>
+              <span class="stat-value">฿2,100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: SALES
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-sales">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-size:1rem;font-weight:800">ยอดขาย</div>
+        <div style="display:flex;gap:10px">
+          <input type="month" value="2026-06" style="font-size:.82rem;padding:6px 10px;border-radius:8px;border:1px solid var(--border)"/>
+          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Export Excel</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-top"><div class="kpi-icon" style="background:var(--primary-light);color:var(--primary)"><i class="fa-solid fa-thai-baht-sign"></i></div><div class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i>+18%</div></div>
+          <div class="kpi-value">฿1,248,500</div><div class="kpi-label">ยอดขายเดือนนี้</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><div class="kpi-icon" style="background:var(--success-light);color:var(--success)"><i class="fa-solid fa-file-invoice"></i></div><div class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i>+32</div></div>
+          <div class="kpi-value">1,048</div><div class="kpi-label">จำนวนบิลเดือนนี้</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><div class="kpi-icon" style="background:#dbeafe;color:#1e40af"><i class="fa-solid fa-bottle-water"></i></div><div class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i>+5%</div></div>
+          <div class="kpi-value">28,450</div><div class="kpi-label">ถังที่ส่งเดือนนี้</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top"><div class="kpi-icon" style="background:var(--gold-light);color:var(--gold)"><i class="fa-solid fa-clock"></i></div><div class="kpi-trend down"><i class="fa-solid fa-arrow-down"></i>-3%</div></div>
+          <div class="kpi-value">฿23,800</div><div class="kpi-label">ยอดค้างชำระ</div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchSalesView(this,'daily')">รายวัน</button>
+        <button class="tab-btn" onclick="switchSalesView(this,'weekly')">รายสัปดาห์</button>
+        <button class="tab-btn" onclick="switchSalesView(this,'monthly')">รายเดือน</button>
+      </div>
+
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-header"><span class="card-title" id="salesChartTitle">ยอดขายรายวัน — มิถุนายน 2569</span></div>
+        <div class="card-body"><div style="height:260px"><canvas id="salesDetailChart"></canvas></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">ตารางยอดขายรายวัน</span>
+          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-filter"></i> กรอง</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>วันที่</th><th>จำนวนบิล</th><th>ยอดขาย</th><th>เงินสด</th><th>โอน/QR</th><th>เครดิต</th><th>ค้างชำระ</th></tr></thead>
+            <tbody id="salesTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: PRODUCTS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-products">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-size:1rem;font-weight:800">จัดการสินค้า</div>
+        <button class="btn btn-primary" onclick="openProductModal()"><i class="fa-solid fa-plus"></i> เพิ่มสินค้า</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">รายการสินค้าทั้งหมด</span>
+          <div style="display:flex;gap:8px">
+            <input type="text" placeholder="ค้นหาสินค้า..." style="width:180px;font-size:.82rem"/>
+            <select style="font-size:.82rem;padding:6px 10px"><option>ทุกหมวด</option><option>ถัง</option><option>ขวด</option></select>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>รหัส</th><th>ชื่อสินค้า</th><th>ขนาด</th><th>ราคา/หน่วย</th><th>หน่วย</th><th>สต็อก</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+            <tbody id="productTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: STOCK
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-stock">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-size:1rem;font-weight:800">สต็อก IN / OUT</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-success" onclick="openStockModal('in')"><i class="fa-solid fa-arrow-down"></i> นำเข้าสต็อก (IN)</button>
+          <button class="btn btn-danger" onclick="openStockModal('out')"><i class="fa-solid fa-arrow-up"></i> เบิกออก (OUT)</button>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:20px">
+        <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon" style="background:var(--success-light);color:var(--success)"><i class="fa-solid fa-arrow-down"></i></div></div><div class="kpi-value" style="color:var(--success)">+850</div><div class="kpi-label">IN เดือนนี้ (ถัง/ลัง)</div></div>
+        <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon" style="background:var(--danger-light);color:var(--danger)"><i class="fa-solid fa-arrow-up"></i></div></div><div class="kpi-value" style="color:var(--danger)">-720</div><div class="kpi-label">OUT เดือนนี้ (ถัง/ลัง)</div></div>
+        <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon" style="background:var(--primary-light);color:var(--primary)"><i class="fa-solid fa-warehouse"></i></div></div><div class="kpi-value">130</div><div class="kpi-label">คงเหลือสุทธิ</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">ประวัติการเคลื่อนไหวสต็อก</span>
+          <div style="display:flex;gap:8px">
+            <select style="font-size:.82rem;padding:5px 8px"><option>ทุกสินค้า</option><option>ถัง 18.9L</option><option>ขวด 1.5L</option><option>ขวด 600ml</option></select>
+            <select style="font-size:.82rem;padding:5px 8px"><option>ทั้ง IN/OUT</option><option>IN เท่านั้น</option><option>OUT เท่านั้น</option></select>
+            <input type="date" value="2026-06-05" style="font-size:.82rem;padding:5px 8px"/>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>วันที่/เวลา</th><th>ประเภท</th><th>สินค้า</th><th>จำนวน</th><th>คงเหลือ</th><th>ผู้ทำรายการ</th><th>หมายเหตุ</th></tr></thead>
+            <tbody id="stockTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: BILLS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-bills">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-size:1rem;font-weight:800">บิล / ใบส่งของ</div>
+        <button class="btn btn-primary" onclick="openBillModal()"><i class="fa-solid fa-plus"></i> เปิดบิลใหม่</button>
+      </div>
+
+      <div class="kpi-grid" style="margin-bottom:20px">
+        <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon" style="background:var(--primary-light);color:var(--primary)"><i class="fa-solid fa-file-invoice"></i></div></div><div class="kpi-value">47</div><div class="kpi-label">บิลวันนี้</div></div>
+        <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon" style="background:var(--success-light);color:var(--success)"><i class="fa-solid fa-check"></i></div></div><div class="kpi-value" style="color:var(--success)">38</div><div class="kpi-label">ชำระแล้ว</div></div>
+        <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon" style="background:var(--gold-light);color:var(--gold)"><i class="fa-solid fa-clock"></i></div></div><div class="kpi-value" style="color:var(--gold)">6</div><div class="kpi-label">รอชำระ</div></div>
+        <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon" style="background:var(--danger-light);color:var(--danger)"><i class="fa-solid fa-xmark"></i></div></div><div class="kpi-value" style="color:var(--danger)">3</div><div class="kpi-label">เกินกำหนด</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">รายการบิลทั้งหมด</span>
+          <div style="display:flex;gap:8px">
+            <input type="text" placeholder="ค้นหาบิล..." style="width:160px;font-size:.82rem"/>
+            <select style="font-size:.82rem;padding:5px 8px"><option>ทุกสถานะ</option><option>ชำระแล้ว</option><option>รอชำระ</option><option>เกินกำหนด</option></select>
+            <input type="date" value="2026-06-05" style="font-size:.82rem;padding:5px 8px"/>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>เลขบิล</th><th>วันที่</th><th>ลูกค้า</th><th>สินค้า</th><th>ยอดรวม</th><th>รับเงิน</th><th>ผู้เปิดบิล</th><th>ผู้จัดส่ง</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+            <tbody id="billTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: DELIVERY
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-delivery">
+      <div style="font-size:1rem;font-weight:800;margin-bottom:18px">การจัดส่ง (Trip Management)</div>
+      <div class="grid-2" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-header"><span class="card-title">สถานะรถวันนี้</span></div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>ทะเบียน</th><th>คนขับ</th><th>โหลดไป</th><th>ส่งแล้ว</th><th>เหลือกลับ</th><th>ยอดเงิน</th><th>สถานะ</th></tr></thead>
+              <tbody id="deliveryTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Reconcile สรุปรายคัน</span></div>
+          <div class="card-body" style="padding:10px 16px">
+            <div id="reconcileList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: CUSTOMERS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-customers">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-size:1rem;font-weight:800">ข้อมูลลูกค้า</div>
+        <button class="btn btn-primary" onclick="openCustomerModal()"><i class="fa-solid fa-plus"></i> เพิ่มลูกค้า</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">รายชื่อลูกค้าทั้งหมด</span>
+          <input type="text" placeholder="ค้นหาลูกค้า..." style="width:200px;font-size:.82rem"/>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>รหัส</th><th>ชื่อร้าน/บริษัท</th><th>ติดต่อ</th><th>วงเงินเครดิต</th><th>ค้างชำระ</th><th>ครั้งล่าสุด</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+            <tbody id="customerTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: PAYMENTS
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-payments">
+      <div style="font-size:1rem;font-weight:800;margin-bottom:18px">ประวัติรับเงิน</div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">รายการรับเงินทั้งหมด</span>
+          <div style="display:flex;gap:8px">
+            <select style="font-size:.82rem;padding:5px 8px"><option>ทุกวิธี</option><option>เงินสด</option><option>โอนเงิน</option><option>QR PromptPay</option><option>เครดิต</option></select>
+            <input type="date" value="2026-06-05" style="font-size:.82rem;padding:5px 8px"/>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>เวลา</th><th>เลขบิล</th><th>ลูกค้า</th><th>ยอด</th><th>วิธีชำระ</th><th>ผู้รับเงิน</th><th>ยืนยัน</th></tr></thead>
+            <tbody id="paymentTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: EMPLOYEES
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-employees">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-size:1rem;font-weight:800">พนักงาน & สิทธิ์การใช้งาน</div>
+        <button class="btn btn-primary" onclick="openEmployeeModal()"><i class="fa-solid fa-plus"></i> เพิ่มพนักงาน</button>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-header"><span class="card-title">รายชื่อพนักงาน</span></div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>ชื่อ-นามสกุล</th><th>ตำแหน่ง</th><th>เบอร์</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+              <tbody id="employeeTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">ตั้งสิทธิ์ตามตำแหน่ง</span></div>
+          <div class="tbl-wrap">
+            <table class="perm-table">
+              <thead>
+                <tr>
+                  <th>สิทธิ์</th>
+                  <th>เจ้าของ</th>
+                  <th>แคชเชียร์</th>
+                  <th>คนขับ</th>
+                  <th>พนักงานขาย</th>
+                </tr>
+              </thead>
+              <tbody id="permTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE: AUDIT LOG
+    ══════════════════════════════════════ -->
+    <div class="page" id="page-audit">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-size:1rem;font-weight:800">Audit Trail — บันทึกทุกการกระทำ</div>
+        <div style="display:flex;gap:8px">
+          <select style="font-size:.82rem;padding:5px 8px"><option>ทุกคน</option><option>สมชาย</option><option>สมศักดิ์</option><option>สุนีย์</option></select>
+          <select style="font-size:.82rem;padding:5px 8px"><option>ทุกประเภท</option><option>แก้ไขบิล</option><option>นำเข้าสต็อก</option><option>รับเงิน</option><option>ยกเลิกบิล</option></select>
+          <input type="date" value="2026-06-05" style="font-size:.82rem;padding:5px 8px"/>
+          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Export</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📋 Log ทุกธุรกรรม (แก้ไขไม่ได้ / ลบไม่ได้)</span>
+          <span class="badge badge-danger">2 รายการต้องตรวจสอบ</span>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>เวลา</th><th>ผู้กระทำ</th><th>การกระทำ</th><th>รายละเอียด</th><th>ก่อนแก้</th><th>หลังแก้</th><th>IP</th><th>ความเสี่ยง</th></tr></thead>
+            <tbody id="auditTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end .content -->
+</div><!-- end .main -->
+
+<!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="productModalTitle">เพิ่มสินค้าใหม่</h3>
+      <button class="modal-close" onclick="closeModal('productModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>รหัสสินค้า</label><input type="text" placeholder="WP-001" id="f-prodCode"/></div>
+        <div class="form-group"><label>หมวดสินค้า</label><select id="f-prodCat"><option>ถัง</option><option>ขวด</option><option>อื่นๆ</option></select></div>
+        <div class="form-group full"><label>ชื่อสินค้า</label><input type="text" placeholder="เช่น น้ำดื่มถัง 18.9 ลิตร" id="f-prodName"/></div>
+        <div class="form-group"><label>ขนาด</label><input type="text" placeholder="18.9 ลิตร" id="f-prodSize"/></div>
+        <div class="form-group"><label>หน่วย</label><input type="text" placeholder="ถัง / ลัง / ขวด" id="f-prodUnit"/></div>
+        <div class="form-group"><label>ราคาขาย (บาท)</label><input type="number" placeholder="35" id="f-prodPrice"/></div>
+        <div class="form-group"><label>ราคาต้นทุน (บาท)</label><input type="number" placeholder="20" id="f-prodCost"/></div>
+        <div class="form-group"><label>สต็อกเริ่มต้น</label><input type="number" placeholder="0" id="f-prodStock"/></div>
+        <div class="form-group"><label>สต็อกขั้นต่ำ (แจ้งเตือน)</label><input type="number" placeholder="50" id="f-prodMinStock"/></div>
+        <div class="form-group"><label>สถานะ</label><select id="f-prodStatus"><option>ใช้งาน</option><option>หยุดขาย</option></select></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('productModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="saveProduct()"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- STOCK MODAL -->
+<div class="modal-overlay" id="stockModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="stockModalTitle">นำเข้าสต็อก (IN)</h3>
+      <button class="modal-close" onclick="closeModal('stockModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>ประเภท</label>
+          <select id="f-stockType">
+            <option value="in">IN — นำเข้า</option>
+            <option value="out">OUT — เบิกออก</option>
+          </select>
+        </div>
+        <div class="form-group"><label>สินค้า</label>
+          <select id="f-stockProduct">
+            <option>ถัง 18.9 ลิตร</option><option>ขวด 1.5 ลิตร</option><option>ขวด 600 ml</option>
+          </select>
+        </div>
+        <div class="form-group"><label>จำนวน</label><input type="number" placeholder="0" id="f-stockQty"/></div>
+        <div class="form-group"><label>ผู้ทำรายการ</label>
+          <select id="f-stockUser"><option>สุนีย์ (แคชเชียร์)</option><option>สมชาย (คนขับ)</option><option>อภิชาติ (เจ้าของ)</option></select>
+        </div>
+        <div class="form-group full"><label>หมายเหตุ</label><textarea id="f-stockNote" placeholder="ระบุแหล่งที่มา / เหตุผล..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('stockModal')">ยกเลิก</button>
+      <button class="btn btn-success" onclick="saveStock()"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- BILL MODAL -->
+<div class="modal-overlay" id="billModal">
+  <div class="modal" style="width:640px">
+    <div class="modal-header">
+      <h3>เปิดบิลใหม่</h3>
+      <button class="modal-close" onclick="closeModal('billModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid" style="margin-bottom:16px">
+        <div class="form-group"><label>วันที่</label><input type="date" value="2026-06-05" id="f-billDate"/></div>
+        <div class="form-group"><label>ลูกค้า</label>
+          <select id="f-billCustomer">
+            <option>ร้านน้ำทอง</option><option>ตลาดเช้านครปฐม</option><option>โรงแรม 3 ดาว</option><option>วัดพระปฐมเจดีย์</option>
+          </select>
+        </div>
+        <div class="form-group"><label>ผู้เปิดบิล</label>
+          <select id="f-billOpener"><option>สุนีย์ (แคชเชียร์)</option><option>สมชาย (คนขับ)</option></select>
+        </div>
+        <div class="form-group"><label>ผู้จัดส่ง</label>
+          <select id="f-billDriver"><option>สมชาย (TH-801)</option><option>วิชัย (TH-805)</option><option>ประสาน (TH-803)</option></select>
+        </div>
+      </div>
+
+      <div style="font-size:.83rem;font-weight:700;margin-bottom:8px">รายการสินค้า</div>
+      <table style="width:100%;margin-bottom:10px;font-size:.82rem;border-collapse:collapse">
+        <thead><tr style="background:var(--bg)"><th style="padding:7px 10px;text-align:left">สินค้า</th><th style="padding:7px 10px">จำนวน</th><th style="padding:7px 10px">ราคา/หน่วย</th><th style="padding:7px 10px">รวม</th><th style="padding:7px 10px"></th></tr></thead>
+        <tbody id="billItemsBody">
+          <tr>
+            <td style="padding:6px 4px"><select style="font-size:.8rem;width:100%"><option>ถัง 18.9L — ฿35</option><option>ขวด 1.5L — ฿12</option><option>ขวด 600ml — ฿8</option></select></td>
+            <td style="padding:6px 4px"><input type="number" value="10" style="width:60px;font-size:.82rem" onchange="calcBillTotal()"/></td>
+            <td style="padding:6px 4px;text-align:center">฿35</td>
+            <td style="padding:6px 4px;text-align:center;font-weight:700">฿350</td>
+            <td style="padding:6px 4px;text-align:center"><button class="btn btn-sm" style="padding:2px 6px;background:var(--danger-light);color:var(--danger);border:none;cursor:pointer">✕</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-outline btn-sm" onclick="addBillItem()"><i class="fa-solid fa-plus"></i> เพิ่มรายการ</button>
+
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <div class="form-group" style="flex:1;margin-right:10px">
+            <label>วิธีรับชำระ</label>
+            <select id="f-billPayment">
+              <option>เงินสด</option><option>โอนเงิน</option><option>QR PromptPay</option><option>เครดิต</option>
+            </select>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:.78rem;color:var(--muted)">ยอดรวมทั้งหมด</div>
+            <div style="font-size:1.6rem;font-weight:800;color:var(--primary)" id="billGrandTotal">฿350</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>หมายเหตุ</label>
+          <textarea placeholder="หมายเหตุเพิ่มเติม..." style="min-height:50px"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('billModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="saveBill()"><i class="fa-solid fa-print"></i> บันทึก & พิมพ์บิล</button>
+    </div>
+  </div>
+</div>
+
+<!-- EMPLOYEE MODAL -->
+<div class="modal-overlay" id="employeeModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>เพิ่มพนักงานใหม่</h3>
+      <button class="modal-close" onclick="closeModal('employeeModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>ชื่อ</label><input type="text" placeholder="ชื่อจริง"/></div>
+        <div class="form-group"><label>นามสกุล</label><input type="text" placeholder="นามสกุล"/></div>
+        <div class="form-group"><label>ตำแหน่ง</label>
+          <select><option>เจ้าของ</option><option>แคชเชียร์</option><option>คนขับ</option><option>พนักงานขาย</option></select>
+        </div>
+        <div class="form-group"><label>เบอร์โทร</label><input type="tel" placeholder="08x-xxx-xxxx"/></div>
+        <div class="form-group"><label>Username</label><input type="text" placeholder="username"/></div>
+        <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('employeeModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="showToast('เพิ่มพนักงานเรียบร้อย','success');closeModal('employeeModal')"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOMER MODAL -->
+<div class="modal-overlay" id="customerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>เพิ่มลูกค้าใหม่</h3>
+      <button class="modal-close" onclick="closeModal('customerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>ชื่อร้าน / บริษัท</label><input type="text" placeholder="ชื่อร้านหรือบริษัท"/></div>
+        <div class="form-group"><label>ผู้ติดต่อ</label><input type="text" placeholder="ชื่อเจ้าของ/ผู้ติดต่อ"/></div>
+        <div class="form-group"><label>เบอร์โทร</label><input type="tel" placeholder="08x-xxx-xxxx"/></div>
+        <div class="form-group full"><label>ที่อยู่จัดส่ง</label><textarea placeholder="ที่อยู่ละเอียด..."></textarea></div>
+        <div class="form-group"><label>วงเงินเครดิต (บาท)</label><input type="number" placeholder="0"/></div>
+        <div class="form-group"><label>ระยะเครดิต (วัน)</label><input type="number" placeholder="30"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('customerModal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="showToast('เพิ่มลูกค้าเรียบร้อย','success');closeModal('customerModal')"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══════════════ SCRIPT ═══════════════ -->
+<script>
+/* ── DATA ── */
+const products = [
+  {code:'WP-001',name:'น้ำดื่มถัง 18.9 ลิตร',size:'18.9L',price:35,cost:20,unit:'ถัง',stock:360,minStock:100,cat:'ถัง',status:'ใช้งาน'},
+  {code:'WP-002',name:'น้ำดื่มขวด 1.5 ลิตร',size:'1.5L',price:12,cost:5,unit:'ลัง',stock:225,minStock:50,cat:'ขวด',status:'ใช้งาน'},
+  {code:'WP-003',name:'น้ำดื่มขวด 600 ml',size:'600ml',price:8,cost:3,unit:'ลัง',stock:48,minStock:60,cat:'ขวด',status:'ใช้งาน'},
+  {code:'WP-004',name:'น้ำแร่ขวด 330 ml',size:'330ml',price:7,cost:2.5,unit:'ลัง',stock:120,minStock:30,cat:'ขวด',status:'ใช้งาน'},
+];
+
+const stockLogs = [
+  {dt:'2026-06-05 08:15',type:'in',product:'ถัง 18.9 ลิตร',qty:200,balance:360,user:'สุนีย์',note:'รับจากซัพพลายเออร์'},
+  {dt:'2026-06-05 07:00',type:'out',product:'ถัง 18.9 ลิตร',qty:120,balance:160,user:'สมชาย',note:'โหลดรถ TH-801'},
+  {dt:'2026-06-04 14:30',type:'out',product:'ขวด 1.5 ลิตร',qty:30,balance:225,user:'วิชัย',note:'โหลดรถ TH-805'},
+  {dt:'2026-06-04 09:00',type:'in',product:'ขวด 600 ml',qty:60,balance:48,user:'สุนีย์',note:'รับสินค้า lot ใหม่'},
+  {dt:'2026-06-03 16:00',type:'out',product:'ขวด 600 ml',qty:12,balance:36,user:'ประสาน',note:'โหลดรถ TH-803'},
+];
+
+const bills = [
+  {id:'INV-2847',date:'05/06/69',cust:'ร้านน้ำทอง',items:'ถัง 18.9L x10, ขวด 1.5L x5',total:470,payment:'QR',opener:'สุนีย์',driver:'สมชาย',status:'ชำระแล้ว'},
+  {id:'INV-2846',date:'05/06/69',cust:'ตลาดเช้านครปฐม',items:'ถัง 18.9L x30',total:1050,payment:'เครดิต',opener:'สุนีย์',driver:'วิชัย',status:'รอชำระ'},
+  {id:'INV-2845',date:'05/06/69',cust:'ร้านสะดวกซื้อ ป.ป.',items:'ขวด 600ml x20',total:160,payment:'โอน',opener:'สุนีย์',driver:'ประสาน',status:'ชำระแล้ว'},
+  {id:'INV-2844',date:'01/05/69',cust:'โรงแรม 3 ดาว',items:'ถัง 18.9L x50, ขวด 1.5L x20',total:1990,payment:'เครดิต',opener:'สมศักดิ์',driver:'สมชาย',status:'เกินกำหนด'},
+  {id:'INV-2843',date:'04/06/69',cust:'วัดพระปฐมเจดีย์',items:'ถัง 18.9L x20',total:700,payment:'เงินสด',opener:'สุนีย์',driver:'วิชัย',status:'ชำระแล้ว'},
+  {id:'INV-2842',date:'04/06/69',cust:'โรงเรียนสาธิต',items:'ขวด 1.5L x50',total:600,payment:'โอน',opener:'สุนีย์',driver:'ประสาน',status:'ชำระแล้ว'},
+];
+
+const employees = [
+  {name:'อภิชาติ วงศ์สุข',role:'เจ้าของ',tel:'081-234-5678',status:'ออนไลน์'},
+  {name:'สุนีย์ รักดี',role:'แคชเชียร์',tel:'082-345-6789',status:'ออนไลน์'},
+  {name:'สมชาย บุญมี',role:'คนขับ',tel:'083-456-7890',status:'กำลังส่งของ'},
+  {name:'วิชัย สว่างใจ',role:'คนขับ',tel:'084-567-8901',status:'ออนไลน์'},
+  {name:'ประสาน มีสุข',role:'คนขับ',tel:'085-678-9012',status:'กำลังส่งของ'},
+  {name:'สมศักดิ์ ใจดี',role:'พนักงานขาย',tel:'086-789-0123',status:'ออนไลน์'},
+];
+
+const permissions = [
+  {name:'ดูยอดขายรวม',owner:1,cashier:1,driver:0,sales:0},
+  {name:'เปิดบิล/ใบส่งของ',owner:1,cashier:1,driver:0,sales:1},
+  {name:'แก้ไขบิล',owner:1,cashier:0,driver:0,sales:0},
+  {name:'ยกเลิกบิล',owner:1,cashier:0,driver:0,sales:0},
+  {name:'นำเข้าสต็อก (IN)',owner:1,cashier:1,driver:0,sales:0},
+  {name:'เบิกสต็อก (OUT)',owner:1,cashier:1,driver:0,sales:0},
+  {name:'รับเงิน/ปิดรอบรถ',owner:1,cashier:1,driver:1,sales:0},
+  {name:'จัดการลูกค้า',owner:1,cashier:1,driver:0,sales:1},
+  {name:'ดู Audit Log',owner:1,cashier:0,driver:0,sales:0},
+  {name:'จัดการพนักงาน',owner:1,cashier:0,driver:0,sales:0},
+];
+
+const customers = [
+  {id:'C001',name:'ร้านน้ำทอง',contact:'นางสาวทอง',tel:'081-111-2222',credit:5000,debt:0,lastOrder:'05/06/69',status:'ดี'},
+  {id:'C002',name:'ตลาดเช้านครปฐม',contact:'นายตลาด',tel:'082-222-3333',credit:10000,debt:5600,lastOrder:'05/06/69',status:'ค้างชำระ'},
+  {id:'C003',name:'โรงแรม 3 ดาว',contact:'ผจก.โรงแรม',tel:'083-333-4444',credit:20000,debt:8800,lastOrder:'01/05/69',status:'เกินกำหนด'},
+  {id:'C004',name:'วัดพระปฐมเจดีย์',contact:'พระเจ้าอาวาส',tel:'084-444-5555',credit:3000,debt:0,lastOrder:'04/06/69',status:'ดี'},
+  {id:'C005',name:'ร้านอาหารสมพร',contact:'นางสมพร',tel:'085-555-6666',credit:5000,debt:2100,lastOrder:'03/06/69',status:'ค้างชำระ'},
+];
+
+const deliveries = [
+  {plate:'TH-801',driver:'สมชาย',loaded:150,delivered:135,returned:15,amount:4725,status:'ยอดไม่ตรง'},
+  {plate:'TH-803',driver:'ประสาน',loaded:120,delivered:120,returned:0,amount:4200,status:'ยังไม่กลับ'},
+  {plate:'TH-805',driver:'วิชัย',loaded:200,delivered:200,returned:0,amount:7000,status:'ปิดรอบแล้ว'},
+  {plate:'TH-807',driver:'บุญมี',loaded:100,delivered:95,returned:5,amount:3325,status:'กำลังส่ง'},
+];
+
+const payments = [
+  {time:'15:10',bill:'INV-2847',cust:'ร้านน้ำทอง',amount:470,method:'QR PromptPay',receiver:'ระบบ (auto)',verified:'✅ อัตโนมัติ'},
+  {time:'14:30',bill:'INV-2845',cust:'ร้านสะดวกซื้อ',amount:160,method:'โอนเงิน',receiver:'สุนีย์',verified:'✅ ยืนยันแล้ว'},
+  {time:'13:00',bill:'INV-2843',cust:'วัดพระปฐมเจดีย์',amount:700,method:'เงินสด',receiver:'สมชาย',verified:'⏳ รอตรวจสอบ'},
+  {time:'11:20',bill:'INV-2842',cust:'โรงเรียนสาธิต',amount:600,method:'โอนเงิน',receiver:'สุนีย์',verified:'✅ ยืนยันแล้ว'},
+];
+
+const auditLogs = [
+  {time:'14:22',user:'สมชาย',action:'ยอดเงินไม่ตรง',detail:'Trip TH-801 ขาด ฿1,200',before:'฿4,725',after:'฿3,525',ip:'192.168.1.5',risk:'danger'},
+  {time:'10:32',user:'สมศักดิ์',action:'แก้ไขบิล',detail:'#INV-2831 ลดราคา',before:'฿2,500',after:'฿2,000',ip:'192.168.1.8',risk:'warn'},
+  {time:'15:10',user:'ระบบ',action:'รับชำระ QR',detail:'#INV-2847 PromptPay',before:'-',after:'฿470',ip:'auto',risk:'ok'},
+  {time:'12:05',user:'วิชัย',action:'ปิดรอบรถ',detail:'TH-805 ยอดตรง',before:'เปิด',after:'ปิด',ip:'192.168.1.6',risk:'ok'},
+  {time:'08:15',user:'สุนีย์',action:'นำเข้าสต็อก',detail:'ถัง 18.9L +200',before:'160',after:'360',ip:'192.168.1.2',risk:'ok'},
+  {time:'10:00',user:'สมศักดิ์',action:'ยกเลิกบิล',detail:'#INV-2819 ยกเลิก',before:'active',after:'cancelled',ip:'192.168.1.8',risk:'warn'},
+];
+
+const salesData = {
+  daily:[65,72,61,83,70,48,84],
+  weekly:[380,420,510,490,550,610,590],
+  monthly:[840,920,1080,980,1150,1248,0],
+  labels:{daily:['จ','อ','พ','พฤ','ศ','ส','อา'],weekly:['W1','W2','W3','W4','W5','W6','W7'],monthly:['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','']}
+};
+
+/* ── NAV ── */
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  const titles={dashboard:'Dashboard',sales:'ยอดขาย',products:'จัดการสินค้า',stock:'สต็อก IN/OUT',bills:'บิล / ใบส่งของ',delivery:'การจัดส่ง',customers:'ข้อมูลลูกค้า',payments:'ประวัติรับเงิน',employees:'พนักงาน & สิทธิ์',audit:'Audit Trail'};
+  document.getElementById('topbarTitle').textContent = titles[page] || page;
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+page+"'")){n.classList.add('active')}
+  });
+  renderPage(page);
+}
+
+function renderPage(page){
+  if(page==='products') renderProducts();
+  if(page==='stock') renderStock();
+  if(page==='bills') renderBills();
+  if(page==='delivery') renderDelivery();
+  if(page==='customers') renderCustomers();
+  if(page==='payments') renderPayments();
+  if(page==='employees') renderEmployees();
+  if(page==='audit') renderAudit();
+  if(page==='sales') renderSalesTable();
+}
+
+/* ── CHARTS ── */
+let salesChart, payChart, salesDetailChart;
+function initCharts(){
+  const ctx1 = document.getElementById('salesChart').getContext('2d');
+  salesChart = new Chart(ctx1,{
+    type:'bar',
+    data:{
+      labels:salesData.labels.daily,
+      datasets:[{
+        label:'ยอดขาย (พัน ฿)',
+        data:salesData.daily,
+        backgroundColor:'rgba(0,87,168,.8)',
+        borderRadius:6,
+      },{
+        label:'เป้าหมาย',
+        data:[70,70,70,70,70,70,70],
+        type:'line',borderColor:'rgba(244,163,10,.8)',
+        borderWidth:2,pointRadius:0,fill:false,tension:.4,
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}
+  });
+
+  const ctx2 = document.getElementById('payChart').getContext('2d');
+  payChart = new Chart(ctx2,{
+    type:'doughnut',
+    data:{
+      labels:['เงินสด','โอนเงิน','QR PromptPay','เครดิต'],
+      datasets:[{data:[25,35,30,10],backgroundColor:['#f4a30a','#0057a8','#00b4d8','#7c3aed'],borderWidth:0,hoverOffset:6}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:10}}},cutout:'65%'}
+  });
+
+  const ctx3 = document.getElementById('salesDetailChart').getContext('2d');
+  salesDetailChart = new Chart(ctx3,{
+    type:'bar',
+    data:{
+      labels:Array.from({length:30},(_,i)=>`${i+1}`),
+      datasets:[{
+        label:'ยอดขาย (พัน ฿)',
+        data:Array.from({length:30},()=>Math.floor(Math.random()*60+30)),
+        backgroundColor:'rgba(0,87,168,.75)',borderRadius:4,
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}
+  });
+}
+
+function switchSalesView(btn,type){
+  document.querySelectorAll('#page-sales .tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const t={daily:'รายวัน — มิถุนายน 2569',weekly:'รายสัปดาห์ — มิถุนายน 2569',monthly:'รายเดือน — 2569'};
+  document.getElementById('salesChartTitle').textContent = 'ยอดขาย'+t[type];
+}
+
+function setDashTab(btn,t){
+  document.querySelectorAll('#page-dashboard .tabs .tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const d={today:{r:'฿84,200',b:47,bt:1247,a:2},week:{r:'฿512,400',b:284,bt:7820,a:5},month:{r:'฿1,248,500',b:1048,bt:28450,a:12}};
+  document.getElementById('kpi-revenue').textContent=d[t].r;
+  document.getElementById('kpi-bills').textContent=d[t].b;
+  document.getElementById('kpi-bottles').textContent=d[t].bt.toLocaleString();
+  document.getElementById('kpi-alerts').textContent=d[t].a;
+}
+
+/* ── RENDER TABLES ── */
+function renderProducts(){
+  document.getElementById('productTable').innerHTML = products.map((p,i)=>`
+    <tr>
+      <td><code style="font-size:.75rem">${p.code}</code></td>
+      <td><strong>${p.name}</strong></td>
+      <td>${p.size}</td>
+      <td class="font-bold">฿${p.price}</td>
+      <td>${p.unit}</td>
+      <td>
+        <span style="font-weight:700;color:${p.stock<p.minStock?'var(--danger)':'var(--success)'}">${p.stock}</span>
+        ${p.stock<p.minStock?'<span class="badge badge-danger" style="margin-left:4px">ต่ำ</span>':''}
+      </td>
+      <td><span class="badge ${p.status==='ใช้งาน'?'badge-success':'badge-muted'}">${p.status}</span></td>
+      <td>
+        <div class="tbl-actions">
+          <button class="btn btn-sm btn-outline btn-icon" onclick="editProduct(${i})" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn btn-sm btn-icon" style="background:var(--danger-light);color:var(--danger);border:none" onclick="deleteProduct(${i})" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderStock(){
+  document.getElementById('stockTable').innerHTML = stockLogs.map(s=>`
+    <tr>
+      <td style="font-size:.8rem">${s.dt}</td>
+      <td><span class="badge ${s.type==='in'?'badge-success':'badge-danger'}">${s.type==='in'?'▼ IN':'▲ OUT'}</span></td>
+      <td>${s.product}</td>
+      <td><strong style="color:${s.type==='in'?'var(--success)':'var(--danger)'}">${s.type==='in'?'+':'−'}${s.qty}</strong></td>
+      <td>${s.balance}</td>
+      <td><div style="display:flex;align-items:center;gap:6px"><div class="avatar" style="background:var(--primary);width:22px;height:22px;font-size:.65rem">${s.user[0]}</div>${s.user}</div></td>
+      <td style="color:var(--muted);font-size:.8rem">${s.note}</td>
+    </tr>
+  `).join('');
+}
+
+function renderBills(){
+  const statusMap={ชำระแล้ว:'badge-success',รอชำระ:'badge-warn',เกินกำหนด:'badge-danger'};
+  const payMap={'QR':'pay-qr','โอน':'pay-transfer','เงินสด':'pay-cash','เครดิต':'pay-credit'};
+  document.getElementById('billTable').innerHTML = bills.map((b,i)=>`
+    <tr>
+      <td><strong>#${b.id}</strong></td>
+      <td style="font-size:.8rem;color:var(--muted)">${b.date}</td>
+      <td>${b.cust}</td>
+      <td style="font-size:.78rem;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${b.items}">${b.items}</td>
+      <td><strong>฿${b.total.toLocaleString()}</strong></td>
+      <td><span class="pay-method ${payMap[b.payment]||'pay-cash'}">${b.payment}</span></td>
+      <td><div style="display:flex;align-items:center;gap:5px"><div class="avatar" style="background:var(--accent);width:22px;height:22px;font-size:.65rem">${b.opener[0]}</div>${b.opener}</div></td>
+      <td><div style="display:flex;align-items:center;gap:5px"><div class="avatar" style="background:var(--gold);width:22px;height:22px;font-size:.65rem">${b.driver[0]}</div>${b.driver}</div></td>
+      <td><span class="badge ${statusMap[b.status]}">${b.status}</span></td>
+      <td>
+        <div class="tbl-actions">
+          <button class="btn btn-sm btn-outline btn-icon" title="ดูรายละเอียด" onclick="showToast('ดูบิล #${b.id}')"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn btn-sm btn-outline btn-icon" title="พิมพ์" onclick="showToast('กำลังพิมพ์...')"><i class="fa-solid fa-print"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderDelivery(){
+  const statusMap={ปิดรอบแล้ว:'badge-success',ยังไม่กลับ:'badge-warn',ยอดไม่ตรง:'badge-danger',กำลังส่ง:'badge-primary'};
+  document.getElementById('deliveryTable').innerHTML = deliveries.map(d=>`
+    <tr>
+      <td><strong>${d.plate}</strong></td>
+      <td>${d.driver}</td>
+      <td>${d.loaded}</td>
+      <td style="color:var(--success);font-weight:700">${d.delivered}</td>
+      <td>${d.returned}</td>
+      <td><strong>฿${d.amount.toLocaleString()}</strong></td>
+      <td><span class="badge ${statusMap[d.status]||'badge-muted'}">${d.status}</span></td>
+    </tr>
+  `).join('');
+
+  document.getElementById('reconcileList').innerHTML = deliveries.map(d=>{
+    const ok = d.status==='ปิดรอบแล้ว';
+    const warn = d.status==='ยอดไม่ตรง';
+    return `
+    <div style="padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid var(--border);background:${warn?'var(--danger-light)':ok?'var(--success-light)':'var(--bg)'}">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <strong>${d.plate} — ${d.driver}</strong>
+        <span class="badge ${warn?'badge-danger':ok?'badge-success':'badge-warn'}">${d.status}</span>
+      </div>
+      <div style="font-size:.78rem;color:var(--muted)">โหลด ${d.loaded} → ส่ง ${d.delivered} → กลับ ${d.returned} → เงิน ฿${d.amount.toLocaleString()}</div>
+      ${warn?'<div style="font-size:.78rem;color:var(--danger);margin-top:4px;font-weight:700">⚠ ยอดขาดไป ฿1,200 — รอตรวจสอบ</div>':''}
+    </div>`;
+  }).join('');
+}
+
+function renderCustomers(){
+  const sMap={ดี:'badge-success',ค้างชำระ:'badge-warn',เกินกำหนด:'badge-danger'};
+  document.getElementById('customerTable').innerHTML = customers.map((c,i)=>`
+    <tr>
+      <td style="font-size:.78rem;color:var(--muted)">${c.id}</td>
+      <td><strong>${c.name}</strong><br/><span style="font-size:.75rem;color:var(--muted)">${c.contact}</span></td>
+      <td style="font-size:.8rem">${c.tel}</td>
+      <td>฿${c.credit.toLocaleString()}</td>
+      <td><strong style="color:${c.debt>0?'var(--danger)':'var(--success)'}">${c.debt>0?'฿'+c.debt.toLocaleString():'ไม่มีหนี้'}</strong></td>
+      <td style="font-size:.8rem;color:var(--muted)">${c.lastOrder}</td>
+      <td><span class="badge ${sMap[c.status]}">${c.status}</span></td>
+      <td>
+        <div class="tbl-actions">
+          <button class="btn btn-sm btn-outline btn-icon" title="แก้ไข" onclick="showToast('แก้ไขลูกค้า: ${c.name}')"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn btn-sm btn-primary btn-sm" onclick="showToast('ดูประวัติสั่งซื้อ')" style="font-size:.72rem;padding:3px 8px">ประวัติ</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderPayments(){
+  const mMap={'QR PromptPay':'pay-qr','โอนเงิน':'pay-transfer','เงินสด':'pay-cash','เครดิต':'pay-credit'};
+  document.getElementById('paymentTable').innerHTML = payments.map(p=>`
+    <tr>
+      <td style="font-size:.8rem">${p.time}</td>
+      <td><strong>#${p.bill}</strong></td>
+      <td>${p.cust}</td>
+      <td><strong>฿${p.amount.toLocaleString()}</strong></td>
+      <td><span class="pay-method ${mMap[p.method]||'pay-cash'}">${p.method}</span></td>
+      <td>${p.receiver}</td>
+      <td style="font-size:.8rem">${p.verified}</td>
+    </tr>
+  `).join('');
+}
+
+function renderEmployees(){
+  const roleMap={เจ้าของ:'badge-purple',แคชเชียร์:'badge-primary',คนขับ:'badge-warn',พนักงานขาย:'badge-success'};
+  const statusColor={ออนไลน์:'var(--success)',กำลังส่งของ:'var(--gold)'};
+  document.getElementById('employeeTable').innerHTML = employees.map((e,i)=>`
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="avatar" style="background:${['var(--primary)','var(--accent)','var(--gold)','var(--success)','var(--purple)','var(--danger)'][i%6]}">${e.name[0]}</div>
+          <strong>${e.name}</strong>
+        </div>
+      </td>
+      <td><span class="badge ${roleMap[e.role]||'badge-muted'}">${e.role}</span></td>
+      <td style="font-size:.8rem">${e.tel}</td>
+      <td><div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;border-radius:50%;background:${statusColor[e.status]||'var(--muted)'}"></div>${e.status}</div></td>
+      <td>
+        <div class="tbl-actions">
+          <button class="btn btn-sm btn-outline btn-icon" onclick="showToast('แก้ไขพนักงาน: ${e.name}')"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn btn-sm btn-icon" style="background:var(--danger-light);color:var(--danger);border:none" onclick="showToast('ปิดบัญชี: ${e.name}','warn')"><i class="fa-solid fa-ban"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  document.getElementById('permTable').innerHTML = permissions.map(p=>`
+    <tr>
+      <td>${p.name}</td>
+      <td><input type="checkbox" class="perm-check" ${p.owner?'checked':''} onchange="showToast('บันทึกสิทธิ์แล้ว','success')"/></td>
+      <td><input type="checkbox" class="perm-check" ${p.cashier?'checked':''} onchange="showToast('บันทึกสิทธิ์แล้ว','success')"/></td>
+      <td><input type="checkbox" class="perm-check" ${p.driver?'checked':''} onchange="showToast('บันทึกสิทธิ์แล้ว','success')"/></td>
+      <td><input type="checkbox" class="perm-check" ${p.sales?'checked':''} onchange="showToast('บันทึกสิทธิ์แล้ว','success')"/></td>
+    </tr>
+  `).join('');
+}
+
+function renderAudit(){
+  const riskMap={ok:'badge-success',warn:'badge-warn',danger:'badge-danger'};
+  const riskLabel={ok:'ปกติ',warn:'ตรวจสอบ',danger:'⚠ ความเสี่ยงสูง'};
+  document.getElementById('auditTable').innerHTML = auditLogs.map(a=>`
+    <tr>
+      <td style="font-size:.8rem;color:var(--muted)">${a.time}</td>
+      <td><div style="display:flex;align-items:center;gap:5px"><div class="avatar" style="background:var(--primary);width:22px;height:22px;font-size:.65rem">${a.user[0]}</div>${a.user}</div></td>
+      <td><strong>${a.action}</strong></td>
+      <td style="font-size:.8rem">${a.detail}</td>
+      <td style="font-size:.8rem;color:var(--muted)">${a.before}</td>
+      <td style="font-size:.8rem;font-weight:700">${a.after}</td>
+      <td style="font-size:.75rem;color:var(--muted)">${a.ip}</td>
+      <td><span class="badge ${riskMap[a.risk]}">${riskLabel[a.risk]}</span></td>
+    </tr>
+  `).join('');
+}
+
+function renderSalesTable(){
+  const rows = Array.from({length:5},(_,i)=>{
+    const d=5-i, cash=Math.floor(Math.random()*20+10)*100, tr=Math.floor(Math.random()*30+15)*100;
+    const qr=Math.floor(Math.random()*25+10)*100, cr=Math.floor(Math.random()*10)*100;
+    const total=cash+tr+qr+cr, debt=Math.floor(Math.random()*2)*Math.floor(Math.random()*5000);
+    return `<tr>
+      <td>0${d}/06/2569</td>
+      <td>${Math.floor(Math.random()*20+30)}</td>
+      <td><strong>฿${total.toLocaleString()}</strong></td>
+      <td style="color:#92400e">฿${cash.toLocaleString()}</td>
+      <td style="color:#1e40af">฿${(tr+qr).toLocaleString()}</td>
+      <td style="color:var(--purple)">฿${cr.toLocaleString()}</td>
+      <td style="color:${debt>0?'var(--danger)':'var(--success)'}"><strong>${debt>0?'฿'+debt.toLocaleString():'–'}</strong></td>
+    </tr>`;
+  });
+  document.getElementById('salesTableBody').innerHTML = rows.join('');
+}
+
+/* ── MODALS ── */
+function openProductModal(){ document.getElementById('productModalTitle').textContent='เพิ่มสินค้าใหม่'; openModal('productModal'); }
+function openStockModal(type){ document.getElementById('stockModalTitle').textContent=type==='in'?'นำเข้าสต็อก (IN)':'เบิกสต็อกออก (OUT)'; document.getElementById('f-stockType').value=type; openModal('stockModal'); }
+function openBillModal(){ openModal('billModal'); }
+function openEmployeeModal(){ openModal('employeeModal'); }
+function openCustomerModal(){ openModal('customerModal'); }
+
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); });
+});
+
+function saveProduct(){
+  const name = document.getElementById('f-prodName').value;
+  if(!name){ showToast('กรุณากรอกชื่อสินค้า','warn'); return; }
+  showToast('บันทึกสินค้า "'+name+'" เรียบร้อย','success');
+  closeModal('productModal');
+}
+
+function saveStock(){
+  const qty = document.getElementById('f-stockQty').value;
+  if(!qty){ showToast('กรุณากรอกจำนวน','warn'); return; }
+  const type = document.getElementById('f-stockType').value;
+  showToast((type==='in'?'นำเข้าสต็อก':'เบิกสต็อก')+' '+qty+' หน่วย เรียบร้อย','success');
+  closeModal('stockModal');
+}
+
+function saveBill(){
+  showToast('บันทึกบิลเรียบร้อย — กำลังพิมพ์...','success');
+  closeModal('billModal');
+}
+
+function editProduct(i){ openProductModal(); showToast('โหลดข้อมูล: '+products[i].name); }
+function deleteProduct(i){ if(confirm('ต้องการลบสินค้า "'+products[i].name+'" ?')){ showToast('ลบสินค้าแล้ว','warn'); } }
+
+function addBillItem(){
+  const tbody = document.getElementById('billItemsBody');
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td style="padding:6px 4px"><select style="font-size:.8rem;width:100%"><option>ถัง 18.9L — ฿35</option><option>ขวด 1.5L — ฿12</option><option>ขวด 600ml — ฿8</option></select></td>
+    <td style="padding:6px 4px"><input type="number" value="1" style="width:60px;font-size:.82rem" onchange="calcBillTotal()"/></td>
+    <td style="padding:6px 4px;text-align:center">฿35</td>
+    <td style="padding:6px 4px;text-align:center;font-weight:700">฿35</td>
+    <td style="padding:6px 4px;text-align:center"><button class="btn btn-sm" style="padding:2px 6px;background:var(--danger-light);color:var(--danger);border:none;cursor:pointer" onclick="this.closest('tr').remove();calcBillTotal()">✕</button></td>`;
+  tbody.appendChild(row);
+}
+
+function calcBillTotal(){
+  document.getElementById('billGrandTotal').textContent = '฿'+Math.floor(Math.random()*2000+200);
+}
+
+/* ── TOAST ── */
+function showToast(msg, type=''){
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast'+(type?' '+type:'');
+  const icon = {success:'✅',danger:'⛔',warn:'⚠️'}[type]||'ℹ️';
+  t.innerHTML = icon+' '+msg;
+  c.appendChild(t);
+  setTimeout(()=>t.style.opacity='0',2800);
+  setTimeout(()=>t.remove(),3200);
+}
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',()=>{
+  initCharts();
+  showPage('dashboard');
+});
+</script>
+</body>
+</html>
